@@ -12,7 +12,7 @@ import { supabase } from "@/lib/supabase/supabase";
 export async function singin(data:{email:string, password:string}) {
     try {
         const { email, password } = data;
-        const userCredential = await supabase.auth.signInWithPassword({email, password});
+        const userCredential = await supabase.auth.signInWithPassword({email, password,});
         const user = userCredential.data.user;
          console.log("data singin", userCredential,{email, password})
         if(!user?.id){
@@ -22,7 +22,8 @@ export async function singin(data:{email:string, password:string}) {
         if(user?.id){
         
          // console.log('usuario invalido')
-          await AuthService.createSessionToken({user_id:user.id}) 
+         console.log(userCredential.data)
+          await AuthService.createSessionToken({user_id:user.id,token_supabase:userCredential.data.session.access_token}) 
         }
         return user
         console.log("Usuário logado com sucesso:", user);
@@ -38,31 +39,42 @@ export async function singin(data:{email:string, password:string}) {
 
 
 
-export async function singup(data:{email:string, password:string}) {
+export async function singup(data:{email:string, password:string,name:string}) {
   try {
     const userExist = await getUserByEmail(data.email);
     if (userExist) {
       console.log("Usuário já existe", userExist);
       throw Error().message ="User alredy exist";
     }
-    const userSupabase = await supabase.auth.signUp({email:data.email,password:data.password});
+    const userSupabase = await supabase.auth.signUp({
+      email: data.email,
+      password: data.password,
+      options: {
+        data: {
+          display_name: data.name, // Aqui adicionamos o nome de exibição no metadata
+        },
+      },
+    });
     if (userSupabase.error) {
       console.error('Erro ao criar usuário2:', userSupabase.error);
+      throw userSupabase.error
       return;
     }
     if (userSupabase.data.user) {
-      console.log(userSupabase.data)
+      // console.log(userSupabase.data)
       const { error: profileError } = await supabase
         .from('users')
         .insert({
           id: userSupabase.data.user.id,
           email:data.email,
-          name:data.email,
+          name:data.name,
+          user_name:data.name.split(" ")[0].slice(0,6).concat(userSupabase.data.user.id),
           created_at: new Date().toISOString(),
         });
         
       if (profileError) {
         console.error('Erro ao criar perfil:', profileError);
+        await supabase.auth.admin.deleteUser(userSupabase.data.user?.id!)
         throw profileError
       }
       const user = userSupabase.data.user
@@ -97,3 +109,4 @@ async function getUserByEmail(email: string) {
 
   return data;
 }
+

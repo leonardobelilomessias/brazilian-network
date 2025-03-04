@@ -16,6 +16,7 @@ import Link from "next/link";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Digite um email válido." }),
+  name: z.string().min(1,{ message: "Digite um nome válido." }),
   password: z.string().min(6,{ message: "Digite uma senha com no mínimo 6 digitos." }).max(50),
   confirmPassword:z.string(),
 }).superRefine(({ confirmPassword, password }, ctx) => {
@@ -36,13 +37,14 @@ export function FormSignup(){
         resolver: zodResolver(formSchema),
         defaultValues: {
           email: "",
-          password:""
+          password:"",
+          name:""
         },
       })
     async   function onSubmit(values: z.infer<typeof formSchema>) {
       setLoad(true)
         try{
-          const user =   await axios.post("/api/singup",{email:values.email, password:values.password})
+          const user =   await axios.post("/api/singup",{email:values.email, password:values.password, name:values.name})
           if(user.data?.id){
       
             // router.replace('/dashboard')
@@ -126,6 +128,20 @@ export function FormSignup(){
         <>
         <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+      <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="align-left self-end ">Nome</FormLabel>
+              <FormControl>
+                <Input placeholder="Digite seu nome"  type="text"{...field} />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="email"
@@ -140,6 +156,7 @@ export function FormSignup(){
             </FormItem>
           )}
         />
+
     <FormField
           control={form.control}
           name="password"
@@ -147,7 +164,7 @@ export function FormSignup(){
             <FormItem>
               <FormLabel>Senha</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="Senha" {...field} />
+                <Input type="password" placeholder="Digite sua senha" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -160,7 +177,7 @@ export function FormSignup(){
             <FormItem>
               <FormLabel>Repita a Senha</FormLabel>
               <FormControl>
-                <Input placeholder="Senha" type="password" {...field} />
+                <Input placeholder="Repita a senha digitada" type="password" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

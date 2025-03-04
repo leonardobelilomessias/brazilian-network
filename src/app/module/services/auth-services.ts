@@ -8,7 +8,7 @@ async function openSessionToken(token:string) {
     return payload
 }
 
-async function createSessionToken(payload:{user_id:string}){
+async function createSessionToken(payload:{user_id:string,token_supabase?:string}){
     const secret = new TextEncoder().encode(process.env.AUTH_SECRET)
     const session = await new jose.SignJWT(payload).setProtectedHeader({
         alg:"HS256"
@@ -24,6 +24,13 @@ async function createSessionToken(payload:{user_id:string}){
         path:'/',
         httpOnly:true
     })
+    if(!!payload.token_supabase){
+        cookies().set('token_supabase',payload.token_supabase,{
+            expires:(exp as number)*1000,
+            path:'/',
+            httpOnly:true
+        })
+    }
 }
 
 async function isSessionValid() {

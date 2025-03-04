@@ -1,6 +1,8 @@
+'use client'
+import { supabaseClient } from '@/lib/supabase/client';
 import React from 'react';
 
-export default function TopTipsSection() {
+export   function TopTipsSection() {
   const tips = [
     {
       id: 1,

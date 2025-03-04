@@ -10,8 +10,8 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
     try{
-        const {email, password} = await request.json() 
-        const response = await singup({email,password})
+        const {email, password, name} = await request.json() 
+        const response = await singup({email,password,name})
      
         // const session =  await AuthService.isSessionValid()
         // console.log('response',email,password)

@@ -118,7 +118,7 @@ export const Navbar = () => {
           <div className="hidden md:flex gap-2">
             <Link
               rel="noreferrer noopener"
-              href="/entrar"
+              href="/cadastro"
     
               
               className={`rounded border border-white text-white flex align-middle justify-center items-center px-4`}

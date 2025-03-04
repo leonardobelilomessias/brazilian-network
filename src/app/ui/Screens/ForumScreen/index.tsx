@@ -226,7 +226,7 @@ const formSchema = z.object({
     
   })
  
-export function CreatePostForumDialog({setPostsForum}:{setPostsForum:([])=>void}) {
+export function CreatePostForumDialog({setPostsForum}:{setPostsForum:([]: PostsForumType[])=>void}) {
     const [idPost,setIdPost] = useState("")
     const[load,setLoad] = useState(false)
     const [created,setCreated] = useState(false)

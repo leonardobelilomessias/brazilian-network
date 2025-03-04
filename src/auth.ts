@@ -4,16 +4,18 @@ import Credentials from 'next-auth/providers/credentials';
 import { z } from 'zod';
 import { signInUser } from '@/lib/firebase/signinUser';
 import { authConfig } from './auth.config';
-import { User } from 'firebase/auth';
+import { supabase } from './lib/supabase/supabase';
+import { User, UserResponse } from '@supabase/supabase-js';
  
 type IUser = {
   id:string
 }
 
 
-async function getUser(email:string, password:string): Promise<User | undefined>{
+async function getUser(email:string, password:string): Promise<User | null>{
   try {
-  const user = await signInUser({email, password})
+    const { data: { user } } = await supabase.auth.signInWithPassword({email, password})
+    console.log(user)
   return user
 } catch (error) {
   console.error('Failed to fetch user:', error);
@@ -32,8 +34,8 @@ export const { auth, signIn, signOut } = NextAuth({
         if (parsedCredentials.success) {
           const { email, password } = parsedCredentials.data;
           const user = await getUser(email,password);
-          if (!user?.uid) return null;
-          if (user.uid) return user
+          if (!user?.id) return null;
+          if (user.id) return user
         }
         console.log('Invalid credentials');
         return null

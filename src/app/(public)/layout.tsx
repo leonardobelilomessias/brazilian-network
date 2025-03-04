@@ -3,7 +3,8 @@ import { Inter } from "next/font/google";
 import "../globals.css";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
-
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from 'next/headers'
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: {
@@ -19,6 +20,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const supabase = createServerComponentClient({ cookies })
   return (
     <html lang="pt-br"  style={{paddingTop:0,marginTop:0, boxSizing: 'border-box'}}>
 
