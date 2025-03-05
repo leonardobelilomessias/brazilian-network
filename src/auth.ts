@@ -15,6 +15,7 @@ type IUser = {
 async function getUser(email:string, password:string): Promise<User | null>{
   try {
     const { data: { user } } = await supabase.auth.signInWithPassword({email, password})
+    
     console.log(user)
   return user
 } catch (error) {

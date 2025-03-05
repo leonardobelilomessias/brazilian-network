@@ -7,7 +7,9 @@ import { AuthService } from "../services/auth-services";
 import { FirebaseError } from "firebase/app";
 import { auth } from "@/lib/firebase/firebase";
 import { supabase } from "@/lib/supabase/supabase";
-
+import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import { revalidatePath } from "next/cache";
 
 export async function singin(data:{email:string, password:string}) {
     try {
@@ -20,8 +22,8 @@ export async function singin(data:{email:string, password:string}) {
           
         }
         if(user?.id){
-        
-         // console.log('usuario invalido')
+          const session = await singinWithSupabaseServer({email, password})
+         // console.log('usuario invalido')     
          console.log(userCredential.data)
           await AuthService.createSessionToken({user_id:user.id,token_supabase:userCredential.data.session.access_token}) 
         }
@@ -37,7 +39,49 @@ export async function singin(data:{email:string, password:string}) {
 }
 
 
+export async function singinWithSupabaseServer(data:{email:string, password:string}) {
+  const supabase = createServerActionClient({ cookies: () => cookies() });
+  const { email, password } = data;
 
+  try {
+    const { data: authData, error } = await supabase.auth.signInWithPassword({
+      email,
+      password, 
+    });
+
+    if (error) {
+      console.error('Erro de login:', error);
+      return { error: error.message };
+    }
+
+    const session = authData.session;
+
+    if (session) {
+      cookies().set('sb-access-token', session.access_token, {
+        httpOnly: true,        // Impede acesso ao cookie via JavaScript no navegador
+        // secure: process.env.NODE_ENV === 'production',  // Cookie só é enviado em HTTPS em produção
+        sameSite: 'lax',      // Restringe envio do cookie em requisições cross-site
+        path: '/'             // Cookie disponível em todo o site
+      });
+      
+      cookies().set('sb-refresh-token', session.refresh_token, {
+        httpOnly: true,
+        // secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/'
+      });
+
+      revalidatePath('/');
+      return { data: authData, error: null };
+    }
+
+    return { error: 'Sessão não encontrada' };
+
+  } catch (error) {
+    console.error('Erro inesperado:', error);
+    return { error: 'Erro ao fazer login' };
+  }
+}
 
 export async function singup(data:{email:string, password:string,name:string}) {
   try {

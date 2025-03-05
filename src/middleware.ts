@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AuthService } from './app/module/services/auth-services';
+import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
 
 
 
@@ -10,9 +11,10 @@ export const config = {
 const publicRoutes = ["/",'/landing', '/cadastro', '/entrar',];
 
 export async function middleware(req: NextRequest) {
-  //console.log(req.nextUrl);
-
+  const res = NextResponse.next();
+  const supabase = createMiddlewareClient({ req: req, res });
   const pathname = req.nextUrl.pathname;
+  await supabase.auth.getSession();
 
   if (publicRoutes.includes(pathname)) {
     return NextResponse.next();

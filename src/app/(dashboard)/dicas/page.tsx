@@ -1,10 +1,9 @@
-import { BuildingScreeen } from "@/app/ui/Screens/BuldingScreen";
-import TipsSection from "@/app/ui/Screens/TipsSCreen";
+import { TipsScreen } from "@/app/ui/Screens/TipsScreen";
 
 export default function dicas(){
     return(
         <>
-            <TipsSection/>
+            <TipsScreen/>
         </>
     )
 }
