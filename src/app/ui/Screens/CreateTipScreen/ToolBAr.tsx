@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback } from "react";
+import React from "react";
 import {
   Heading1,
   Heading2,
@@ -19,141 +19,151 @@ import {
 import { Editor } from "@tiptap/react";
 import { ToggleButton } from "./ToggleButton";
 
-// Tipagem para as opções da Toolbar
-interface Option {
-  icon: React.ReactNode;
-  onClick: () => void;
-  pressed: boolean;
-  disabled?: boolean;
-}
-
-// Tipagem para o componente ToolBar
 interface ToolBarProps {
   editor: Editor | null;
 }
 
 export function ToolBar({ editor }: ToolBarProps) {
   if (!editor) return null;
-
-  // Usando useCallback para melhorar a performance
-  const toggleHeading = useCallback((level: 1 | 2 | 3) => {
-    // Verificar capacidade e então executar
-    if (editor.can().toggleHeading({ level })) {
-      editor.chain().focus().toggleHeading({ level }).run();
-      console.log(`Headings level ${level} toggled`);
-    } else {
-      console.error(`Cannot toggle heading level ${level}`);
-    }
-  }, [editor]);
-
-  const addImage = useCallback(() => {
-    const url = window.prompt("URL");
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run();
-    }
-  }, [editor]);
   
-  // Teste - Verificar capacidades do editor
-  console.log("Editor pode fazer heading?", {
-    h1: editor.can().toggleHeading({ level: 1 }),
-    h2: editor.can().toggleHeading({ level: 2 }),
-    h3: editor.can().toggleHeading({ level: 3 }),
-  });
-  
-  // Verificar estado ativo
-  console.log("Estado ativo do heading:", {
-    h1: editor.isActive('heading', { level: 1 }),
-    h2: editor.isActive('heading', { level: 2 }),
-    h3: editor.isActive('heading', { level: 3 }),
-  });
 
-  const Options: Option[] = [
-    {
-      icon: <Heading1 className="size-4" />,
-      onClick: () => toggleHeading(1),
-      pressed: editor.isActive('heading', { level: 1 }),
-    },
-    {
-      icon: <Heading2 className="size-4" />,
-      onClick: () => toggleHeading(2),
-      pressed: editor.isActive('heading', { level: 2 }),
-    },
-    {
-      icon: <Heading3 className="size-4" />,
-      onClick: () => toggleHeading(3),
-      pressed: editor.isActive('heading', { level: 3 }),
-    },
-    {
-      icon: <Bold className="size-4" />,
-      onClick: () => editor.chain().focus().toggleBold().run(),
-      pressed: editor.isActive("bold"),
-    },
-    {
-      icon: <Italic className="size-4" />,
-      onClick: () => editor.chain().focus().toggleItalic().run(),
-      pressed: editor.isActive("italic"),
-    },
-    {
-      icon: <Strikethrough className="size-4" />,
-      onClick: () => editor.chain().focus().toggleStrike().run(),
-      pressed: editor.isActive("strike"),
-    },
-    {
-      icon: <AlignLeft className="size-4" />,
-      onClick: () => editor.chain().focus().setTextAlign("left").run(),
-      pressed: editor.isActive({ textAlign: "left" }),
-    },
-    {
-      icon: <AlignCenter className="size-4" />,
-      onClick: () => editor.chain().focus().setTextAlign("center").run(),
-      pressed: editor.isActive({ textAlign: "center" }),
-    },
-    {
-      icon: <AlignRight className="size-4" />,
-      onClick: () => editor.chain().focus().setTextAlign("right").run(),
-      pressed: editor.isActive({ textAlign: "right" }),
-    },
-    {
-      icon: <List className="size-4" />,
-      onClick: () => editor.chain().focus().toggleBulletList().run(),
-      pressed: editor.isActive("bulletList"),
-    },
-    {
-      icon: <ListOrdered className="size-4" />,
-      onClick: () => editor.chain().focus().toggleOrderedList().run(),
-      pressed: editor.isActive("orderedList"),
-    },
-    {
-      icon: <Code className="size-4" />,
-      onClick: () => editor.chain().focus().toggleCodeBlock().run(),
-      pressed: editor.isActive("codeBlock"),
-    },
-    {
-      icon: <Highlighter className="size-4" />,
-      onClick: () => editor.chain().focus().toggleHighlight().run(),
-      pressed: editor.isActive("highlight"),
-    },
-    {
-      icon: <Upload className="size-4" />,
-      onClick: () => addImage(),
-      pressed: editor.isActive("image"),
-    },
-  ];
+  // Função para lidar com os headings
+  const handleHeading = (level: 1 | 2 | 3) => {
+    editor.chain().focus().toggleHeading({ level }).run();
+  };
 
   return (
     <div className="border rounded-md p-1.5 mb-1 bg-slate-50 space-x-1 sticky top-10 z-50">
-      {Options.map((option, i) => (
-        <ToggleButton
-          key={i}
-          size="sm"
-          pressed={option.pressed}
-          onPressedChange={option.onClick}
-          variant={option.pressed ? "outline" : "default"}
-          disabled={option.disabled}
-        >
-          {option.icon}
-        </ToggleButton>
-      ))}
+      <ToggleButton
+        size="sm"
+        pressed={editor.isActive("heading", { level: 1 })}
+        onPressedChange={() => handleHeading(1)}
+        variant={editor.isActive("heading", { level: 1 }) ? "outline" : "default"}
+      >
+        <Heading1 className="size-4" />
+      </ToggleButton>
+      
+      <ToggleButton
+        size="sm"
+        pressed={editor.isActive("heading", { level: 2 })}
+        onPressedChange={() => handleHeading(2)}
+        variant={editor.isActive("heading", { level: 2 }) ? "outline" : "default"}
+      >
+        <Heading2 className="size-4" />
+      </ToggleButton>
+      
+      <ToggleButton
+        size="sm"
+        pressed={editor.isActive("heading", { level: 3 })}
+        onPressedChange={() => handleHeading(3)}
+        variant={editor.isActive("heading", { level: 3 }) ? "outline" : "default"}
+      >
+        <Heading3 className="size-4" />
+      </ToggleButton>
+      
+      <ToggleButton
+        size="sm"
+        pressed={editor.isActive("bold")}
+        onPressedChange={() => editor.chain().focus().toggleBold().run()}
+        variant={editor.isActive("bold") ? "outline" : "default"}
+      >
+        <Bold className="size-4" />
+      </ToggleButton>
+      
+      <ToggleButton
+        size="sm"
+        pressed={editor.isActive("italic")}
+        onPressedChange={() => editor.chain().focus().toggleItalic().run()}
+        variant={editor.isActive("italic") ? "outline" : "default"}
+      >
+        <Italic className="size-4" />
+      </ToggleButton>
+      
+      <ToggleButton
+        size="sm"
+        pressed={editor.isActive("strike")}
+        onPressedChange={() => editor.chain().focus().toggleStrike().run()}
+        variant={editor.isActive("strike") ? "outline" : "default"}
+      >
+        <Strikethrough className="size-4" />
+      </ToggleButton>
+      
+      <ToggleButton
+        size="sm"
+        pressed={editor.isActive({ textAlign: "left" })}
+        onPressedChange={() => editor.chain().focus().setTextAlign("left").run()}
+        variant={editor.isActive({ textAlign: "left" }) ? "outline" : "default"}
+      >
+        <AlignLeft className="size-4" />
+      </ToggleButton>
+      
+      <ToggleButton
+        size="sm"
+        pressed={editor.isActive({ textAlign: "center" })}
+        onPressedChange={() => editor.chain().focus().setTextAlign("center").run()}
+        variant={editor.isActive({ textAlign: "center" }) ? "outline" : "default"}
+      >
+        <AlignCenter className="size-4" />
+      </ToggleButton>
+      
+      <ToggleButton
+        size="sm"
+        pressed={editor.isActive({ textAlign: "right" })}
+        onPressedChange={() => editor.chain().focus().setTextAlign("right").run()}
+        variant={editor.isActive({ textAlign: "right" }) ? "outline" : "default"}
+      >
+        <AlignRight className="size-4" />
+      </ToggleButton>
+      
+      <ToggleButton
+        size="sm"
+        pressed={editor.isActive("bulletList")}
+        onPressedChange={() => editor.chain().focus().toggleBulletList().run()}
+        variant={editor.isActive("bulletList") ? "outline" : "default"}
+      >
+        <List className="size-4" />
+      </ToggleButton>
+      
+      <ToggleButton
+        size="sm"
+        pressed={editor.isActive("orderedList")}
+        onPressedChange={() => editor.chain().focus().toggleOrderedList().run()}
+        variant={editor.isActive("orderedList") ? "outline" : "default"}
+      >
+        <ListOrdered className="size-4" />
+      </ToggleButton>
+      
+      <ToggleButton
+        size="sm"
+        pressed={editor.isActive("codeBlock")}
+        onPressedChange={() => editor.chain().focus().toggleCodeBlock().run()}
+        variant={editor.isActive("codeBlock") ? "outline" : "default"}
+      >
+        <Code className="size-4" />
+      </ToggleButton>
+      
+      <ToggleButton
+        size="sm"
+        pressed={editor.isActive("highlight")}
+        onPressedChange={() => editor.chain().focus().toggleHighlight().run()}
+        variant={editor.isActive("highlight") ? "outline" : "default"}
+      >
+        <Highlighter className="size-4" />
+      </ToggleButton>
+      
+      <ToggleButton
+        size="sm"
+        pressed={editor.isActive("image")}
+        onPressedChange={() => {
+          const url = window.prompt("URL");
+          if (url) {
+            editor.chain().focus().setImage({ src: url }).run();
+          }
+        }}
+        variant={editor.isActive("image") ? "outline" : "default"}
+      >
+        <Upload className="size-4" />
+      </ToggleButton>
     </div>
   );
 }
