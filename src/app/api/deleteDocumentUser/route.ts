@@ -46,8 +46,7 @@ export async function DELETE(request: NextRequest) {
 
 const deleteDocumentFile = async (user_id: string, field: string) => {
   const fileRef = ref(storage, `documentsUsers/${user_id}/${field}`);
-  // console.log('fileref = ',fileRef)
-  // Deleta o arquivo da storage
+
   await deleteObject(fileRef);
 };
 
@@ -58,7 +57,6 @@ const removeFieldFromDocument = async (user_id: string, field: string) => {
   if (docSnap.exists()) {
     
     const data = docSnap.data();
-    console.log('exist docref de documents db = 01',data)
     if (data && field in data) {
       // Remove o campo especificado do documento utilizando deleteField
       await updateDoc(docRef, {

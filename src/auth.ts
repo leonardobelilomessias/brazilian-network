@@ -4,8 +4,8 @@ import Credentials from 'next-auth/providers/credentials';
 import { z } from 'zod';
 import { signInUser } from '@/lib/firebase/signinUser';
 import { authConfig } from './auth.config';
-import { supabase } from './lib/supabase/supabase';
 import { User, UserResponse } from '@supabase/supabase-js';
+import { supabaseClient } from './lib/supabase/client';
  
 type IUser = {
   id:string
@@ -14,9 +14,9 @@ type IUser = {
 
 async function getUser(email:string, password:string): Promise<User | null>{
   try {
-    const { data: { user } } = await supabase.auth.signInWithPassword({email, password})
+    const { data: { user } } = await supabaseClient.auth.signInWithPassword({email, password})
     
-    console.log(user)
+
   return user
 } catch (error) {
   console.error('Failed to fetch user:', error);

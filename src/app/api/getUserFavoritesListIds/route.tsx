@@ -20,7 +20,6 @@ interface ApiResponse {
 export  async function GET() {
   const session = cookies().get("user_id")
   const user_id = session?.value as string
-  console.log("id usre in favorite list i d", user_id)
 
     try {
       const collectionRef = collection(db, 'user_favorites');

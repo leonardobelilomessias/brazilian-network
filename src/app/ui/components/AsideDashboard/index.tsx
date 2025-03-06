@@ -13,6 +13,9 @@ const pathname = usePathname();
 
 return(
             <aside className="w-[14.9%] hidden md:block fixed border-r h-full border-gray-200    overflow-y-scroll pb-20">
+            <p className='flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium   md:flex-none md:justify-start md:p-2 md:px-3'>Conta</p>
+            <Separator />
+            <AsideAccountButtons/>
             <p className='flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium   md:flex-none md:justify-start md:p-2 md:px-3'>Comunidade</p>
             <Separator />
             <AsideCommunityButtons/>
@@ -25,9 +28,7 @@ return(
                 <AsideProductsButtons/>
             {/* navigation community */}
             
-            <p className='flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium   md:flex-none md:justify-start md:p-2 md:px-3'>Conta</p>
-            <Separator />
-            <AsideAccountButtons/>
+
             {/* menu dev */}
             <p className='flex h-[48px] grow items-center justify-center gap-2 rounded-md p-3 text-sm font-medium   md:flex-none md:justify-start md:p-2 md:px-3'>Desenvolvimento</p>
             <Separator/>

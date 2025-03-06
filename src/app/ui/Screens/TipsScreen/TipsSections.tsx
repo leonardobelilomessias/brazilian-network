@@ -2,9 +2,10 @@ import React from 'react';
 import { fetchTips } from './queries/queriesTips';
 import { TipCard } from './TipCard';
 import { Button } from "@/components/ui/button";
-import { Sparkles, ChevronRight } from "lucide-react";
+import { Sparkles, ChevronRight, SquarePlus } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Tip } from './types';
+import Link from 'next/link';
 
 interface TipsSectionProps {
   data: Tip[];
@@ -22,11 +23,12 @@ export const TipsSection: React.FC<TipsSectionProps> = ({ data }) => {
             Dicas em Destaque
           </h2>
         </div>
-        
+        <Link href={'/dicas/criar-dica'} >
         <Button variant="default" className='bg-blue-500' size="sm">
           Criar nova Dica
-          <ChevronRight className="ml-2 h-4 w-4" />
+          <SquarePlus className="ml-2 h-4 w-4" />
         </Button>
+        </Link>
       </div>
 
       <Separator />

@@ -11,7 +11,6 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function DELETE(request: NextRequest, ) {
       const product  = request.nextUrl.searchParams
       const product_id = product.get('product_id')
-      console.log(product_id)
       const session = cookies().get("user_id")
       const user_id = session?.value as string
     try {

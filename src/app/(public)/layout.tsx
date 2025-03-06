@@ -20,7 +20,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = createServerComponentClient({ cookies })
   return (
     <html lang="pt-br"  style={{paddingTop:0,marginTop:0, boxSizing: 'border-box'}}>
 

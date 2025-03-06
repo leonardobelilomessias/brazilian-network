@@ -12,25 +12,33 @@ const publicRoutes = ["/",'/landing', '/cadastro', '/entrar',];
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
-  const supabase = createMiddlewareClient({ req: req, res });
-  const pathname = req.nextUrl.pathname;
-  await supabase.auth.getSession();
-
-  if (publicRoutes.includes(pathname)) {
-    return NextResponse.next();
-  }
-
-  const session = await AuthService.isSessionValid()
-  if (!session) {
-    const isAPIRoute = pathname.startsWith('/api');
-
-    if (isAPIRoute) {
-        return NextResponse.next()
-      return NextResponse.json({ message: 'Não autorizado' }, { status: 401 });
+  const supabase =  createMiddlewareClient({ req, res });
+  
+  try{
+    const seessionSupabase = await supabase.auth.getSession()
+    console.log( "sessão no midleware")
+    // const supabase = createMiddlewareClient({ req: req, res });
+    const pathname = req.nextUrl.pathname;
+    // await supabase.auth.getSession();
+    
+    if (publicRoutes.includes(pathname)) {
+      return NextResponse.next();
     }
-
-    return NextResponse.redirect(new URL('/entrar', req.url));
+    
+    const session = await AuthService.isSessionValid()
+    console.log(session, 'seesion')
+    if (!session) {
+      const isAPIRoute = pathname.startsWith('/api');
+      
+      if (isAPIRoute) {
+        return NextResponse.next()
+      }
+      
+      return NextResponse.redirect(new URL('/entrar', req.url));
+    }
+    
+    return NextResponse.next();
+  }catch (error) {
+    console.error('Erro no middleware:', error);
   }
-
-  return NextResponse.next();
 }

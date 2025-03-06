@@ -6,17 +6,17 @@ import { redirect } from "next/navigation";
 import { AuthService } from "../services/auth-services";
 import { FirebaseError } from "firebase/app";
 import { auth } from "@/lib/firebase/firebase";
-import { supabase } from "@/lib/supabase/supabase";
 import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
+import { supabaseClient } from "@/lib/supabase/client";
 
 export async function singin(data:{email:string, password:string}) {
     try {
         const { email, password } = data;
-        const userCredential = await supabase.auth.signInWithPassword({email, password,});
+        const userCredential = await supabaseClient.auth.signInWithPassword({email, password,});
         const user = userCredential.data.user;
-         console.log("data singin", userCredential,{email, password})
+         console.log("data singinwithpassword cliente", )
         if(!user?.id){
           throw new Error().name = userCredential.error?.code as string
           
@@ -42,7 +42,7 @@ export async function singin(data:{email:string, password:string}) {
 export async function singinWithSupabaseServer(data:{email:string, password:string}) {
   const supabase = createServerActionClient({ cookies: () => cookies() });
   const { email, password } = data;
-
+console.log('singni on server')
   try {
     const { data: authData, error } = await supabase.auth.signInWithPassword({
       email,
@@ -90,7 +90,7 @@ export async function singup(data:{email:string, password:string,name:string}) {
       console.log("Usuário já existe", userExist);
       throw Error().message ="User alredy exist";
     }
-    const userSupabase = await supabase.auth.signUp({
+    const userSupabase = await supabaseClient.auth.signUp({
       email: data.email,
       password: data.password,
       options: {
@@ -106,7 +106,7 @@ export async function singup(data:{email:string, password:string,name:string}) {
     }
     if (userSupabase.data.user) {
       // console.log(userSupabase.data)
-      const { error: profileError } = await supabase
+      const { error: profileError } = await supabaseClient
         .from('users')
         .insert({
           id: userSupabase.data.user.id,
@@ -118,7 +118,7 @@ export async function singup(data:{email:string, password:string,name:string}) {
         
       if (profileError) {
         console.error('Erro ao criar perfil:', profileError);
-        await supabase.auth.admin.deleteUser(userSupabase.data.user?.id!)
+        await supabaseClient.auth.admin.deleteUser(userSupabase.data.user?.id!)
         throw profileError
       }
       const user = userSupabase.data.user
@@ -140,7 +140,7 @@ export async function singup(data:{email:string, password:string,name:string}) {
 
 
 async function getUserByEmail(email: string) {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseClient
     .from("users")
     .select("*")
     .eq("email", email)

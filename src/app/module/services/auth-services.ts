@@ -1,4 +1,5 @@
 import { supabaseClient } from '@/lib/supabase/client'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import * as jose from 'jose'
 import { cookies } from 'next/headers'
 
@@ -36,7 +37,6 @@ async function createSessionToken(payload: { user_id: string, token_supabase?: s
 
 async function isSessionValid() {
     const sessionCookie = cookies().get('sessions')
-
     if (sessionCookie) {
         const { value } = sessionCookie
         const { exp } = await openSessionToken(value)
@@ -47,6 +47,7 @@ async function isSessionValid() {
 }
 
 export const AuthService = {
+    
     openSessionToken,
     createSessionToken,
     isSessionValid,
@@ -58,8 +59,11 @@ export const AuthService = {
 
 
 async function deleteSession() {
-    await supabaseClient.auth.signOut();
+    
     cookies().delete('sessions')
     cookies().delete('user_id')
+    await supabaseClient.auth.signOut();
+    const supabaseServer =  createServerComponentClient({cookies:()=>cookies()})
+    await supabaseServer.auth.signOut()
 
 }

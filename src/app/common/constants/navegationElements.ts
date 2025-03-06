@@ -1,6 +1,7 @@
 import { Bell, BookText, BriefcaseBusiness, CalendarDays, CircleHelp, Flag, Folder, HandHelping, Heart, Hotel, House, HousePlus, Lightbulb, List, ListCollapse, MessageCircleQuestion, MessageSquareQuoteIcon, Quote, QuoteIcon, Radar, Rocket, Settings, Store, TvMinimalPlay, User, User2, Users } from "lucide-react";
 
 export const navigationElementsAccount = [
+  { title: 'Home', link: '/dashboard', icon: House  },
   { title: 'Perfil', link: "/perfil", icon: User2 },
   { title: 'Configurações', link: "/configuracoes", icon: Settings },
 
@@ -20,7 +21,6 @@ export const navigationElementsTools = [
 
 ];
 export const navigationElementsCommunity= [
-  { title: 'Home', link: '/dashboard', icon: House  },
   { title: 'Dicas', link: "/dicas", icon: Lightbulb },
   { title: 'Dúvidas', link: "/duvidas", icon: CircleHelp },
   { title: 'Grupos', link: '/grupos', icon: Users },

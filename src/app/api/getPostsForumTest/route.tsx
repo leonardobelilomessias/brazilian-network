@@ -73,7 +73,6 @@ async function firstPage({productsCol,pageSize,lastCursor,stepPage,totalPages,us
     orderBy("__name__"), // Ordena pelo campo 'created_at'
     limit(Number(pageSize)),
   );
-  console.log("emm first", )
   const snapshot = await getDocs(firstQuery);
   const products: Product[] = snapshot.docs.map(doc => ({
     id: doc.id,
@@ -105,7 +104,6 @@ async function firstPage({productsCol,pageSize,lastCursor,stepPage,totalPages,us
       limit(Number(pageSize)),
       startAfter(cursorDocSnap),
     );
-    console.log("emm nexxt", )
     const snapshot = await getDocs(nextQuery);
     const products: Product[] = snapshot.docs.map(doc => ({
       id: doc.id,
@@ -132,11 +130,9 @@ async function previousPage({productsCol,pageSize,lastCursor,stepPage,totalPages
   const cursorDocRef = doc(db, "post_forum",  lastCursor );
   const cursorDocSnap = await getDoc(cursorDocRef);
   if (cursorDocSnap.exists()) {
-    console.log("Cursor documento:", cursorDocSnap.data().created_at);
   } else {
     console.error("Documento do cursor não encontrado.");
   }
-  console.log(cursorDocSnap.id)
   const nextQuery = query(
     collection(db, "post_forum"),
     orderBy("created_at", "asc"), // Ordena pelo campo 'created_at'
