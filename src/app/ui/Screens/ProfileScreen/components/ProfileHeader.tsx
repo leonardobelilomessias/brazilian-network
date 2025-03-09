@@ -30,8 +30,8 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ user }) => {
       </Avatar>
       <div className="text-center md:text-left flex-grow">
         <h1 className="text-lg md:text-xl font-bold text-blue-600">{user.name}</h1>
-        <p className="text-gray-600 text-base">Origem: {user.origem}</p>
-        <p className="text-gray-600 text-base">Atualmente em: {user.current_in}</p>
+        <p className="text-gray-600 text-sm">Origem: {user.origem}</p>
+        <p className="text-gray-600 text-sm">Atualmente em: {user.current_in}</p>
         <p className="text-sm text-gray-500">{user.bio}</p>
       </div>
       <Link href={`/editar-perfil/${user.id}`} className="absolute top-4 right-4 text-blue-600 hover:underline">

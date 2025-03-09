@@ -1,7 +1,11 @@
 'use server'
-import { IUser } from "@/app/types/types";
 import { supabaseClient } from "../client";
 import { revalidatePath } from "next/cache";
+
+interface IUser {
+  id: string;
+  // Add other user properties here
+}
 
 export const getUserById = async (id: string) => {
     try {

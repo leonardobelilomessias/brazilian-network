@@ -2,7 +2,7 @@ import { supabaseClient } from "@/lib/supabase/client";
 import { PostgrestSingleResponse } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
 
-export const fetchTips = async (): Promise<Tip[]> => {
+export const fetchTips = async (): Promise<Tip[]> => { // Retorna um array de dicas
   const { data, error } = await supabaseClient
   .from("tips")
   .select(
@@ -17,7 +17,8 @@ export const fetchTips = async (): Promise<Tip[]> => {
       created_by:users!tips_created_by_fkey (
         id,
         name,
-        user_name
+        user_name,
+        avatar_url
       ),
       theme_id:themes (
         id,

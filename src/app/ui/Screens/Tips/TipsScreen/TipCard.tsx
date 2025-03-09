@@ -53,10 +53,14 @@ export function TipCard({ tip,userId }: TipCardProps) {
         <CardHeader className="space-y-0 pb-2  flex flex-row justify-between ">
           <div className="flex items-center space-x-3">
             <Avatar className="h-8 w-8">
-            <Image src={tip.created_by.avatar_url || AvatarDefault  } alt = 'avatar user'className='h-8 w-8'/>  
-              <AvatarFallback className="bg-blue-500 text-white">
-                {tip.created_by.name[0].toUpperCase()}
-              </AvatarFallback>
+        <Image 
+          width={500} 
+          height={500} 
+          className='object-cover relative w-full h-full' 
+          src={tip.created_by.avatar_url ? tip.created_by.avatar_url : AvatarDefault} 
+          alt={tip.created_by.name} 
+        />
+      
             </Avatar>
             <div className="flex flex-col">
               <span className="font-medium text-xs">{tip.created_by.name}</span>
