@@ -31,13 +31,14 @@ export const TipsSection: React.FC<TipsSectionProps> = ({ data , title, iconTitl
         </Link>
       </div>
 
-      <Separator />
 
       <div className="grid gap-2">
         {tips.map((tip,key) => (
           <TipCard userId={data.userId} key={tip.id} tip={tip} />
         ))}
       </div>
+
+      <Separator />
     </section>
   );
 };

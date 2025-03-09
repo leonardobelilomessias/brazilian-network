@@ -1,13 +1,14 @@
-import { useRouter } from "next/navigation";
+import React from 'react';
+import EditProfile from '@/app/ui/Screens/ProfileScreen/EditProfile';
+import { getUserById } from '@/lib/supabase/queries/user';
 
+export default async function EditProfilePage({ params }: { params: { id: string } }) {
+  const userId = params.id;
+  const user = await getUserById(userId);
 
-export default function HomePage({params: { id }}: {params: { id: string }}) {
-  //   const router = useRouter();
-  // const resulRouter = router.query;
-  // const id = resulRouter.id as string;
-  return (
+  if (!user) {
+    return <div>Usuário não encontrado.</div>;
+  }
 
-    <>meu id:{id}</>
-
-  );
+  return <EditProfile user={user} />;
 }

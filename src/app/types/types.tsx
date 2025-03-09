@@ -14,22 +14,18 @@ export interface IFormInputFinance {
   tipoRenda?:string
 }
 
-export interface IUser{
-
+export interface IUser {
   name?: string;
   phone?: string;
   email?: string;
   id: string;
-  renda?: number; // Agora os campos são opcionais
-  entrada?: number;
-  saldoFgts?: number;
-  estadoCivil?: string;
-  filhosDependentes?: string;
-  trabalho3Anos?: string;
-  primeiroImovel?: string;
-  financiamento?: string;
-  dataNascimento?: Date | null |string; // Agora é opcional
-  tipoRenda?:string
+  avatar_url?: string |null |undefined;
+  bio?: string;
+  origem?: string;
+  current_in?: string;
+  created_at?: Date;
+  updated_at?: Date;
+
 }
 
 

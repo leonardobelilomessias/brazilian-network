@@ -4,7 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ForwardRefExoticComponent, RefAttributes } from "react"
 
-export function ButtonAsideNavigation({element}:{element:{link:string,title:string, icon:ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>}}){
+export function ButtonAsideNavigation({element}:{element:{link:string,title:string, icon:ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>, status?:string}}){
     const pathname = usePathname()
     return(
         <>
@@ -22,7 +22,18 @@ export function ButtonAsideNavigation({element}:{element:{link:string,title:stri
                     >
                         <element.icon size={18}/>
                       {element.title}
+                      {/* {element.status && <FeatureLabel status={element.status}/>} */}
                     </Link>
         </>
+    )
+  }
+
+  function FeatureLabel({status}:{status:string}){
+    const borderColor = status === 'Novo' ? 'border-blue-500' : 'border-gray-500';
+    const textColor = status === 'Novo' ? 'text-blue-500' : 'text-gray-500';
+    return(
+        <div className="flex items-center gap-2">
+              <p className={`rounded text-xs border ${borderColor} p-0.5 ${textColor}`}>{status}</p>
+        </div>
     )
   }
