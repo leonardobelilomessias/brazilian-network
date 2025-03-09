@@ -1,6 +1,13 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Globe, Video, BookOpen, Calendar, Store, FileText, Briefcase, Users, HelpCircle, AlignJustify } from 'lucide-react';
+import { User } from '@supabase/supabase-js';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import AvatarDefault from '@/app/public/images/profile/default/avatar-default.jpg';
+import EventImageDefault from '@/app/public/images/profile/default/size_120.png'
+import VideoImageDefault from '@/app/public/images/profile/default/sizxe_300_200.png'
+import Image, { StaticImageData } from 'next/image';
+import ProfileHeader from './components/ProfileHeader';
 
 interface Engagement {
   title: string;
@@ -10,7 +17,7 @@ interface Engagement {
 
 interface VideoItem {
   title: string;
-  thumbnail: string;
+  thumbnail: StaticImageData;
 }
 
 interface Question {
@@ -18,7 +25,7 @@ interface Question {
   date: string;
 }
 
-export const ProfileScreen = () => {
+export const ProfileScreen = ({user}:{user:any}) => {
   const engagements: Engagement[] = [
     {
       title: "Como conseguir sua nacionalidade em Portugal",
@@ -43,10 +50,10 @@ export const ProfileScreen = () => {
   ];
 
   const videos: VideoItem[] = [
-    { title: "Estratégias de Viagem", thumbnail: "/placeholder-1.jpg" },
-    { title: "Viajar para o Japão", thumbnail: "/placeholder-2.jpg" },
-    { title: "Valencia", thumbnail: "/placeholder-3.jpg" },
-    { title: "Travel Vlog", thumbnail: "/placeholder-4.jpg" }
+    { title: "Estratégias de Viagem", thumbnail: VideoImageDefault },
+    { title: "Viajar para o Japão", thumbnail: VideoImageDefault },
+    { title: "Valencia", thumbnail: VideoImageDefault },
+    { title: "Travel Vlog", thumbnail:VideoImageDefault }
   ];
 
   const questions: Question[] = [
@@ -72,19 +79,7 @@ export const ProfileScreen = () => {
     <div className="p-4 bg-gray-50 min-h-screen">
       <div className="max-w-4xl mx-auto">
         {/* Profile Header */}
-        <div className="flex items-center bg-white shadow rounded-lg p-6 mb-6">
-          <img 
-            src="/api/placeholder/120/120" 
-            alt="Profile" 
-            className="w-24 h-24 rounded-full mr-6" 
-          />
-          <div>
-            <h1 className="text-2xl font-bold text-blue-600">Leonardo Bello</h1>
-            <p className="text-gray-600">Origem: Belo Horizonte, Minas gerais</p>
-            <p className="text-gray-600">Atualmente em: Watford, Inglaterra</p>
-            <p className="text-sm text-gray-500">A melhor forma de prever o futuro é criá-lo</p>
-          </div>
-        </div>
+        <ProfileHeader user={user} />
 
         {/* Engagement Section */}
         <Card className="mb-6">
@@ -107,27 +102,7 @@ export const ProfileScreen = () => {
         </Card>
 
         {/* Videos Section */}
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Video className="mr-2" /> Vídeos
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-4 gap-4">
-              {videos.map((video, index) => (
-                <div key={index} className="border rounded overflow-hidden">
-                  <img 
-                    src={`/api/placeholder/300/200`} 
-                    alt={video.title} 
-                    className="w-full h-32 object-cover" 
-                  />
-                  <p className="p-2 text-sm text-center">{video.title}</p>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        <VideoCarrousel videos={videos} />
 
         {/* Questions Section */}
         <Card>
@@ -153,3 +128,28 @@ export const ProfileScreen = () => {
   );
 };
 
+function VideoCarrousel({videos}: {videos: VideoItem[]}) {
+  return (
+    <Card className="mb-6">
+      <CardHeader>
+        <CardTitle className="flex items-center">
+          <Video className="mr-2" /> Vídeos
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="flex overflow-x-auto space-x-4">
+          {videos.map((video, index) => (
+            <div key={index} className="border rounded overflow-hidden min-w-[200px]">
+              <Image
+                src={video.thumbnail}
+                alt={video.title}
+                className="w-full h-32 object-cover"
+              />
+              <p className="p-2 text-sm text-center">{video.title}</p>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}

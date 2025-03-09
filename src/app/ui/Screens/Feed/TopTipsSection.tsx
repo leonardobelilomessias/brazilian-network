@@ -43,10 +43,10 @@ export   function TopTipsSection() {
       
       <div className="space-y-4">
         {tips.map((tip) => (
-          <div key={tip.id} className="bg-white p-3 rounded-md shadow-sm hover:bg-gray-50 transition-colors">
-            <h3 className="font-medium text-blue-800 mb-1">{tip.title}</h3>
+          <div key={tip.id} className="bg-white p-3 rounded-md shadow-sm hover:bg-blue-50 hover:cursor-pointer transition-colors">
+            <h3 className="font-medium text-blue-400 mb-1 font-extrabold">{tip.title}</h3>
             <p className="text-xs text-gray-500">
-              Criado em {tip.date} às {tip.time} por <span className="text-blue-500">{tip.author}</span>
+              Criado em {tip.date} às {tip.time} por <span className="text-blue-300 font-bold">{tip.author}</span>
             </p>
           </div>
         ))}

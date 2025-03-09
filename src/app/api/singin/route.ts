@@ -1,6 +1,6 @@
 // import { singin } from "@/modules/auth/actions/auth-actions";
 // import { AuthService } from "@/modules/auth/services/auth-services";
-import { singin } from "@/app/module/actions/auth-actions";
+import { login, singin } from "@/app/module/actions/auth-actions";
 import { FirebaseError } from "firebase/app";
 import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
@@ -8,7 +8,7 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
     try{
         const {email, password} = await request.json() 
-     const response = await singin({email,password})
+        const response = await singin({email,password})
         return NextResponse.json(response)
     }
     catch(error:any){

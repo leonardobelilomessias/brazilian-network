@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
-import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from 'next/headers'
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: {

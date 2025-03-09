@@ -1,9 +1,8 @@
-import { TipsScreen } from "@/app/ui/Screens/TipsScreen";
+import { TipsScreen } from "@/app/ui/Screens/Tips/TipsScreen";
 
-export default function dicas(){
+export default async function dicas(){
     return(
         <>
             <TipsScreen/>
         </>
-    )
-}
+    )}

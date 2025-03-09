@@ -1,5 +1,5 @@
 import { supabaseClient } from '@/lib/supabase/client'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createClient } from '@/utils/supabase/server'
 import * as jose from 'jose'
 import { cookies } from 'next/headers'
 
@@ -59,11 +59,11 @@ export const AuthService = {
 
 
 async function deleteSession() {
-    
+    console.log('deletando sessao')
     cookies().delete('sessions')
     cookies().delete('user_id')
     await supabaseClient.auth.signOut();
-    const supabaseServer =  createServerComponentClient({cookies:()=>cookies()})
+    const supabaseServer =  await createClient()
     await supabaseServer.auth.signOut()
 
 }

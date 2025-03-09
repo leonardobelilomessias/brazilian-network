@@ -5,8 +5,8 @@ import { Footer } from 'react-day-picker';
 import EventsSection from './EventsSection';
 import FeaturedBanner from './FeaturedBanner';
 import RecentQuestionsSection from './RecentQuestionsSection';
-import TopTipsSection from './TopTipsSection';
 import VideosSection from './VideosSection';
+import { TopTipsSection } from './TopTipsSection';
 
 
 export  function Feed() {

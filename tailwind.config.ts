@@ -29,6 +29,7 @@ const config = {
       },
     },
     extend: {
+      
       colors: {
         primaryPalet:"#1169F0",
         secondPaled:"",

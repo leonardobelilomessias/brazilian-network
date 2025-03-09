@@ -1,0 +1,124 @@
+{
+    "control": {
+        "_subjects": {
+            "values": {
+                "observers": [
+                    {},
+                    {},
+                    {},
+                    {}
+                ]
+            },
+            "array": {
+                "observers": []
+            },
+            "state": {
+                "observers": [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {}
+                ]
+            }
+        },
+        "_proxyFormState": {
+            "isDirty": false,
+            "dirtyFields": "all",
+            "validatingFields": false,
+            "touchedFields": "all",
+            "isValidating": false,
+            "isValid": false,
+            "errors": "all",
+            "disabled": true,
+            "defaultValues": "all"
+        },
+        "_fields": {
+            "title": {
+                "_f": {
+                    "ref": {},
+                    "name": "title",
+                    "mount": true,
+                    "value": "nova dica com destaqye"
+                }
+            },
+            "theme_id": {
+                "_f": {
+                    "ref": {
+                        "name": "theme_id"
+                    },
+                    "name": "theme_id",
+                    "mount": true
+                }
+            },
+            "country_id": {
+                "_f": {
+                    "ref": {
+                        "name": "country_id"
+                    },
+                    "name": "country_id",
+                    "mount": true
+                }
+            },
+            "content": {
+                "_f": {
+                    "ref": {
+                        "name": "content"
+                    },
+                    "name": "content",
+                    "mount": true,
+                    "value": "<h1 class=\"rich-text\" style=\"text-align:center\"><mark>Testedica com destaque.</mark></h1><p style=\"text-align:center\">teste de dica com destaque</p><ol><li><p style=\"text-align:left\">teste</p></li><li><p style=\"text-align:left\">teste</p></li><li><p style=\"text-align:left\">teste</p></li></ol><p style=\"text-align:left\"></p>"
+                }
+            }
+        },
+        "_formValues": {
+            "title": "nova dica com destaqye",
+            "content": "<h1 class=\"rich-text\" style=\"text-align:center\"><mark>Testedica com destaque.</mark></h1><p style=\"text-align:center\">teste de dica com destaque</p><ol><li><p style=\"text-align:left\">teste</p></li><li><p style=\"text-align:left\">teste</p></li><li><p style=\"text-align:left\">teste</p></li></ol><p style=\"text-align:left\"></p>"
+        },
+        "_state": {
+            "action": false,
+            "mount": true,
+            "watch": false
+        },
+        "_defaultValues": {
+            "title": "nova dica com destaqye",
+            "content": "<h1 class=\"rich-text\" style=\"text-align:center\"><mark>Testedica com destaque.</mark></h1><p style=\"text-align:center\">teste de dica com destaque</p><ol><li><p style=\"text-align:left\">teste</p></li><li><p style=\"text-align:left\">teste</p></li><li><p style=\"text-align:left\">teste</p></li></ol><p style=\"text-align:left\"></p>"
+        },
+        "_names": {
+            "mount": {},
+            "unMount": {},
+            "array": {},
+            "watch": {}
+        },
+        "_formState": {
+            "submitCount": 0,
+            "isDirty": false,
+            "isLoading": false,
+            "isValidating": false,
+            "isSubmitted": false,
+            "isSubmitting": false,
+            "isSubmitSuccessful": false,
+            "isValid": false,
+            "touchedFields": {},
+            "dirtyFields": {},
+            "validatingFields": {},
+            "errors": {},
+            "disabled": false
+        },
+        "_options": {
+            "mode": "onTouched",
+            "reValidateMode": "onChange",
+            "shouldFocusError": true,
+            "defaultValues": {
+                "title": "nova dica com destaqye",
+                "content": "<h1 class=\"rich-text\" style=\"text-align:center\"><mark>Testedica com destaque.</mark></h1><p style=\"text-align:center\">teste de dica com destaque</p><ol><li><p style=\"text-align:left\">teste</p></li><li><p style=\"text-align:left\">teste</p></li><li><p style=\"text-align:left\">teste</p></li></ol><p style=\"text-align:left\"></p>"
+            }
+        }
+    },
+    "formState": {
+        "defaultValues": {
+            "title": "nova dica com destaqye",
+            "content": "<h1 class=\"rich-text\" style=\"text-align:center\"><mark>Testedica com destaque.</mark></h1><p style=\"text-align:center\">teste de dica com destaque</p><ol><li><p style=\"text-align:left\">teste</p></li><li><p style=\"text-align:left\">teste</p></li><li><p style=\"text-align:left\">teste</p></li></ol><p style=\"text-align:left\"></p>"
+        }
+    }
+}

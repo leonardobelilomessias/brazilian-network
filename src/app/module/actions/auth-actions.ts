@@ -10,11 +10,26 @@ import { createServerActionClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { supabaseClient } from "@/lib/supabase/client";
+import { createClient } from "@/utils/supabase/server";
+
+
+export async function login(data:{email:string, password:string}) {
+  const supabase = await createClient()
+  const { error } = await supabase.auth.signInWithPassword(data)
+
+  if (error) {
+    redirect('/error')
+  }
+
+  revalidatePath('/', 'layout')
+  redirect('/')
+}
 
 export async function singin(data:{email:string, password:string}) {
+  const supabase = await createClient()
     try {
         const { email, password } = data;
-        const userCredential = await supabaseClient.auth.signInWithPassword({email, password,});
+        const userCredential = await supabase.auth.signInWithPassword({email, password,});
         const user = userCredential.data.user;
          console.log("data singinwithpassword cliente", )
         if(!user?.id){
@@ -22,8 +37,6 @@ export async function singin(data:{email:string, password:string}) {
           
         }
         if(user?.id){
-          const session = await singinWithSupabaseServer({email, password})
-         // console.log('usuario invalido')     
          console.log(userCredential.data)
           await AuthService.createSessionToken({user_id:user.id,token_supabase:userCredential.data.session.access_token}) 
         }
@@ -32,7 +45,7 @@ export async function singin(data:{email:string, password:string}) {
         // Aqui você pode redirecionar o usuário ou realizar outra ação após o login bem-sucedido
       } catch (error) {
 
-          // console.log("Erro em auth singin:", error);
+          console.log("Erro em auth singin:", error);
           throw error
         
       }
@@ -84,13 +97,15 @@ console.log('singni on server')
 }
 
 export async function singup(data:{email:string, password:string,name:string}) {
+  const supabase = await createClient()
   try {
     const userExist = await getUserByEmail(data.email);
+    console.log('resultado da busca do usuario', userExist)
     if (userExist) {
       console.log("Usuário já existe", userExist);
       throw Error().message ="User alredy exist";
     }
-    const userSupabase = await supabaseClient.auth.signUp({
+    const userSupabase = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
       options: {
@@ -154,3 +169,24 @@ async function getUserByEmail(email: string) {
   return data;
 }
 
+
+
+export async function signup(formData: FormData) {
+  const supabase = await createClient()
+
+  // type-casting here for convenience
+  // in practice, you should validate your inputs
+  const data = {
+    email: formData.get('email') as string,
+    password: formData.get('password') as string,
+  }
+
+  const { error } = await supabase.auth.signUp(data)
+
+  if (error) {
+    redirect('/error')
+  }
+
+  revalidatePath('/', 'layout')
+  redirect('/')
+}
