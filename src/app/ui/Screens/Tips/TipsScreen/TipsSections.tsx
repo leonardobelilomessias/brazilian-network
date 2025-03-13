@@ -1,12 +1,10 @@
 import React from 'react';
-import { fetchTips } from './queries/queriesTips';
 import { TipCard } from './TipCard';
 import { Button } from "@/components/ui/button";
 import { Sparkles, ChevronRight, SquarePlus } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { Tip } from './types'; // Verifique se o caminho está correto
 import Link from 'next/link';
-import { TipsSectionProps } from './types/typesTips';
+import { Tip, TipsSectionProps } from '@/app/types/TypesDB';
 
 
 

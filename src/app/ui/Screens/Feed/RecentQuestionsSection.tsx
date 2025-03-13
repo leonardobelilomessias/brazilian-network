@@ -1,3 +1,4 @@
+import { Timer } from 'lucide-react';
 import React from 'react';
 
 export default function RecentQuestionsSection() {
@@ -35,7 +36,7 @@ export default function RecentQuestionsSection() {
   return (
     <div className="mb-8 bg-white rounded-lg p-6 shadow-sm">
       <div className="flex items-center mb-4">
-        <span className="text-gray-600 mr-2">⏱️</span>
+        <span className="text-gray-600 mr-2"><Timer/></span>
         <h2 className="text-xl font-semibold">Últimas Perguntas</h2>
       </div>
       

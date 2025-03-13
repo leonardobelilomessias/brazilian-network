@@ -10,7 +10,7 @@ interface IParams {
 export default async function metas({params}:IParams) {
     const supabase = await createClient();
     const {data:{user}}  =await  supabase.auth.getUser()
-    const {data, error} = await supabase.from('users').select('*').eq('id', user?.id).single()
+    const {data, error} = await supabase.from('profiles').select('*').eq('id', user?.id).single()
     if(error) {
         console.error(error)
     }

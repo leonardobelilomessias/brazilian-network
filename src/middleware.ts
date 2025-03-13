@@ -9,7 +9,7 @@ export const config = {
   matcher: '/((?!_next/static|_next/image|favicon.ico).*)',
 };
 
-const publicRoutes = ["/",'/landing', '/cadastro', '/entrar',];
+const publicRoutes = ["/",'/landing', '/cadastro', '/entrar','/dashboard'];
 
 export async function middleware(req: NextRequest) {
   return await updateSession(req)

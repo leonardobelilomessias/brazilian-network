@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Camera, Loader2 } from "lucide-react";
 import { supabaseClient } from "@/lib/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
-import { updateUserById } from "@/lib/supabase/queries/usersClient";
 import Image from "next/image";
 import AvatarDefault from '@/app/public/images/profile/default/avatar-default.jpg';
+import { updateUserById } from "@/lib/supabase/queries/server/user";
 interface AvatarUploadProps {
   userId: string;
   avatarUrl?: string | null;
@@ -35,7 +35,7 @@ export function AvatarUpload({ userId, avatarUrl, userName }: AvatarUploadProps)
       const fileName = `${userId}-${Math.random()}.${fileExt}`;
       const filePath = `avatars/${fileName}`;
 
-      const { data, error: uploadError } = await supabaseClient.storage
+      const { data, error: uploadError } = await supabaseClient().storage
         .from('avatars')
         .upload(filePath, file);
 
@@ -44,7 +44,7 @@ export function AvatarUpload({ userId, avatarUrl, userName }: AvatarUploadProps)
       }
 
       // Obter a URL pública da imagem
-      const { data: { publicUrl } } = supabaseClient.storage
+      const { data: { publicUrl } } = supabaseClient().storage
         .from('avatars')
         .getPublicUrl(filePath);
 
@@ -76,7 +76,7 @@ export function AvatarUpload({ userId, avatarUrl, userName }: AvatarUploadProps)
     try {
       // Remover o avatar do Supabase Storage
       const filePath = `avatars/${userId}`; // Supondo que o nome do arquivo seja o ID do usuário
-      const { error: removeError } = await supabaseClient.storage
+      const { error: removeError } = await supabaseClient().storage
         .from('avatars')
         .remove([filePath]);
 
@@ -137,12 +137,12 @@ export function AvatarUpload({ userId, avatarUrl, userName }: AvatarUploadProps)
           />
         </label>
       </div>
-      <button 
+{ avatarUrl &&     <button 
         onClick={handleRemove} 
         className="text-red-500 hover:underline text-sm font-medium"
       >
         Remover Foto
-      </button>
+      </button>}
       <p className="text-sm text-muted-foreground">
         Clique no ícone da câmera para alterar sua foto
       </p>

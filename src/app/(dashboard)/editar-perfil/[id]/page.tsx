@@ -1,6 +1,6 @@
 import React from 'react';
 import EditProfile from '@/app/ui/Screens/ProfileScreen/EditProfile';
-import { getUserById } from '@/lib/supabase/queries/user';
+import { getUserById } from '@/lib/supabase/queries/server/user';
 
 export default async function EditProfilePage({ params }: { params: { id: string } }) {
   const userId = params.id;

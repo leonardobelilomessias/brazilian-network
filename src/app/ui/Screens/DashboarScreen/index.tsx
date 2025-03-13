@@ -1,16 +1,17 @@
 
-import { HomeCarousel } from "../../components/Carousels/HomeCarousel";
-import EventsSection from "../Feed/EventsSection";
-import VideosSection from "../Feed/VideosSection";
-import RecentQuestionsSection from "../Feed/RecentQuestionsSection";
-import { TopTipsSection } from "../Feed/TopTipsSection";
 import AuthProvider from "@/context/AuthProvider";
 import { createClient } from "@/utils/supabase/server";
+import { fetchTips } from "@/lib/supabase/queries/server/Tips";
+import TopTipsList from "../Feed/TopTipsList";
 
 export async function DashboardScreen(){
     const supabase = await createClient()
     const {data} = await supabase.auth.getUser()
-    const name = data.user?.identities?.[0]?.identity_data?.display_name || 'Visitante'
+    
+    const name = data.user?.user_metadata.display_name || 'Visitante'
+    console.log(data.user?.identities)
+    const userId = data.user?.id
+    const tips = await fetchTips()
     // console.log(data.user,'data supabase')
     // const token_supabase = cookies().get("token_supabase")?.value
     // console.log(token_supabase)
@@ -24,22 +25,14 @@ export async function DashboardScreen(){
 
             <p className="text-2xl font-bold">Bem Vindo {name}</p>
             </AuthProvider>
+            <TopTipsList tips={tips}/>
+            {/* <RecentQuestionsSection /> */}
             {/* <SearchBar/> */}
-            <HomeCarousel/>
-            <TopTipsSection />
+            {/* <HomeCarousel/> */}
             {/* <HeroDashboard/>1 */}
-            <EventsSection />
-            <RecentQuestionsSection />
-            <VideosSection />
-            {/* <Suspense fallback={<TableDataFinanceSkeleton/>}>
-                <TableDataFinance  />
-            </Suspense>
-            <Suspense fallback={<>loading</>}>
-                <SelectedContainer />
-            </Suspense>
-            <Suspense fallback={<>loading</>}>
-                <LaunchContainer />
-            </Suspense>  */}
+            {/* <EventsSection /> */}
+            {/* <VideosSection /> */}
+
         </div>
     )
 }

@@ -9,8 +9,8 @@ interface IUser {
 
 export const getUserById = async (id: string) => {
     try {
-      const { data, error } = await supabaseClient
-        .from('users')
+      const { data, error } = await supabaseClient()
+        .from('profiles')
         .select('*')
         .eq('id', id)
         .single();
@@ -27,8 +27,8 @@ export const getUserById = async (id: string) => {
   };
   export const updateUserById = async (userData:IUser) => {
     try {
-      const { data, error } = await supabaseClient
-        .from('users')
+      const { data, error } = await supabaseClient()
+        .from('profiles')
         .update(userData)
         .eq('id', userData.id);
   

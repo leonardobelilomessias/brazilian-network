@@ -7,7 +7,6 @@ import {  useForm } from "react-hook-form";
 import axios, { AxiosError } from 'axios';
 import { z } from "zod"
 import { useRouter } from "next/navigation";
-import { FirebaseError } from "firebase/app";
 import React from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";

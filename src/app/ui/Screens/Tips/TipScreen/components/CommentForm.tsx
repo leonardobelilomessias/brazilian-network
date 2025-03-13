@@ -5,7 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { addComment } from '../actions/comment-actions';
+import { addComment } from "@/lib/supabase/queries/server/Tips";
 
 const commentSchema = z.object({
   content: z.string().min(1, 'Por favor, digite um comentário'),
@@ -16,9 +16,10 @@ type CommentFormData = z.infer<typeof commentSchema>;
 
 interface CommentFormProps {
   tipId: string;
+  currentUserId: string | undefined;
 }
 
-export function CommentForm({ tipId }: CommentFormProps) {
+export function CommentForm({ tipId,currentUserId }: CommentFormProps) {
   const {
     register,
     handleSubmit,
@@ -36,16 +37,17 @@ export function CommentForm({ tipId }: CommentFormProps) {
     const formData = new FormData();
     formData.append('content', data.content);
     formData.append('tipId', data.tipId);
-    
-    await addComment({ error: null }, formData);
+    if (!currentUserId) return;
+    await addComment({tipId, userId: currentUserId, content: data.content});
     reset();
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" >
       <input type="hidden" {...register('tipId')} />
       <div className="space-y-2">
         <Textarea 
+        disabled={!currentUserId}
           {...register('content')}
           placeholder="Deixe seu comentário..."
           className={`min-h-[100px] ${errors.content ? 'border-red-500 focus:ring-red-500' : ''}`}
@@ -56,7 +58,7 @@ export function CommentForm({ tipId }: CommentFormProps) {
           </p>
         )}
       </div>
-      <Button type="submit" className="bg-blue-500">
+      <Button disabled={ !currentUserId} type="submit" className="bg-blue-500">
         Enviar Comentário
       </Button>
     </form>

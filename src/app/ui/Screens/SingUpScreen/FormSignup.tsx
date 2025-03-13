@@ -7,12 +7,10 @@ import {  useForm } from "react-hook-form";
 import axios, { AxiosError } from 'axios';
 import { z } from "zod"
 import { useRouter } from "next/navigation";
-import { FirebaseError } from "firebase/app";
 import React from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { Loader2 } from "lucide-react";
-import Link from "next/link";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Digite um email válido." }),
@@ -47,7 +45,7 @@ export function FormSignup(){
           const user =   await axios.post("/api/singup",{email:values.email, password:values.password, name:values.name})
           if(user.data?.id){
       
-            // router.replace('/dashboard')
+            router.replace('/dashboard')
           }
           
         
@@ -64,6 +62,17 @@ export function FormSignup(){
                 })
                 return
               }
+              console.log(error.response?.data.message,"infomação do erro")
+              if(error.response?.data.message  ==='permission denied for table profiles'&&error.response?.status ===402){
+
+                toast({
+                  variant: "destructive",
+                  title: "Sem permissão para criar usuário",
+                  description: "Houve um problema com autorização entre em contato com o suporte.",
+                  action: <ToastAction altText="Tente novamente">Tente novamente</ToastAction>,
+                })
+
+              }
               
               if(error.response?.status  ===401){
 
@@ -73,6 +82,8 @@ export function FormSignup(){
                   description: "Verifique os dados de login e tente novamente.",
                   action: <ToastAction altText="Tente novamente">Tente novamente</ToastAction>,
                 })
+
+                
               }else{
                                 toast({
                                   variant: "destructive",
@@ -101,12 +112,12 @@ export function FormSignup(){
                 action: <ToastAction altText="Tente novamente">Tente novamente</ToastAction>,
               })
             }
-            if(error?.response.message ===`over_email_send_rate_limit`){
+            if(error?.response.message ===`over_email_send_rate_limit`&&error?.response.status ===429){
               toast({
                 variant: "destructive",
-                title: "O Email já está em uso",
-                description: "Tente fazer login com o email fornecido",
-                action: <ToastAction altText="Tente novamente">Tente novamente</ToastAction>,
+                title: "Muitas tentativas de cadastramento",
+                description: "Você tentou muitas vezes, tente novamente mais tarde.",
+                action: <ToastAction altText="Tente novamente">Entendi</ToastAction>,
               })
             }
             if(error?.data?.message ===`User alredy exist`){
@@ -121,8 +132,8 @@ export function FormSignup(){
           }finally{
             setLoad(false)
           }
-
-        router.push('/dashboard')
+        
+        // router.push('/dashboard')
       }
     return(
         <>

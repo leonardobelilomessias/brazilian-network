@@ -3,22 +3,40 @@
 import { Separator } from "@/components/ui/separator";
 import { CommentForm } from "./CommentForm";
 import { CommentList } from "./CommentList";
-import { Comment } from '../types/comment';
 
 interface CommentSectionProps {
   comments: Comment[];
   tipId: string;
   currentUserId?: string;
+  commentsCount:number | string
 }
 
-export function CommentSection({ comments, tipId, currentUserId }: CommentSectionProps) {
+interface User {
+  id: string;
+  user_name: string | null;
+  avatar_url: string | null;
+  full_name: string | null;
+}
+
+interface Comment {
+  id: string;
+  content: string;
+  created_at: string;
+  profile: User;
+}
+
+
+export function CommentSection({ comments, tipId, currentUserId, commentsCount }: CommentSectionProps) {
+  const sortedComments = [...comments].sort((a, b) => 
+    new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+  );
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Comentários</h2>
+      <h2 className="text-2xl font-bold">{commentsCount} Comentários</h2>
       <Separator />
-      <CommentForm tipId={tipId} />
-      <CommentList comments={comments} currentUserId={currentUserId} />
+      <CommentForm tipId={tipId} currentUserId={currentUserId} />
+      <CommentList comments={sortedComments} currentUserId={currentUserId} />
     </div>
   );
 }

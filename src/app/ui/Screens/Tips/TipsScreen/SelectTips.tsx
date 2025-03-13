@@ -1,30 +1,124 @@
+'use client'
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { supabaseClient } from "@/lib/supabase/client";
 import { Filter, Search, SlidersHorizontal } from "lucide-react";
+import { useEffect, useState } from "react";
+import WorldFlag from 'react-world-flags';
 
 
 export function SelectGroup() {
     return (
         <div>
             <div className="flex items-center"><SlidersHorizontal size={14} /> <p className="text-sm">Filtros</p></div>
-            <div className="flex gap-4 align-bottom items-end ">
-                <Select title="Tema" />
-                <Select title="País" />
+            <div className="flex gap-4 align-bottom items-end  mt-1">
+                <SelectTheme title="Tema"/>
+                <SelectCountry title="Pais" />
                 <Button size={'sm'} className=" bg-blue-500 text-sm  flex gap-2 "> <Search size={16} /><p>Filtrar</p> </Button>
             </div>
         </div>
     );
 };
 
-function Select({ title }: { title: string }) {
+type countries = {
+    name: string
+    code: string
+    id: string
+  }
+  
+  
+
+
+export function SelectCountry({title}:{title:string}) {
+    const [countries, setcountries] = useState([] as countries[])
+    async function getCountries() {
+      const { data, error } = await supabaseClient()
+        .from('countries',)
+        .select('*') // Ou especifique as colunas: .select('id, name')
+        .order('name', { ascending: true }) // Ordena pelo nome
+      // .limit(20); // Retorna apenas 20 resultados
+      console.log(data)
+      if (error) {
+        console.error('Erro ao buscar países:', error);
+        return [];
+      }
+      setcountries(data)
+      return data;
+    }
+    useEffect(() => {
+      getCountries()
+    }, [])
     return (
-        <div className="">
-            {/* <label htmlFor="theme-select" className="block text-sm font-medium text-gray-700">{title}</label> */}
-            <select id="theme-select" className="mt-1 block w-full border p-2 bg-white border-gray-300 rounded-md text-sm shadow-sm focus:ring focus:ring-opacity-50">
-                <option className="" value="">Selecione um {title}</option>
-                <option value="tema1">{title} 1</option>
-                <option value="tema2">{title} </option>
-                <option value="tema3">{title} </option>
-            </select>
-        </div>
+      <Select>
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder={`Filtrar por ${title}`} />
+        </SelectTrigger>
+        <SelectContent>
+        {countries.map((country, key) => (
+                  <SelectItem className='flex flex-row  cursor-pointer hover:bg-blue-50' style={{ display: "flex" }} key={country.id} value={country.id as string}>
+                    <div className='flex align-middle justify-center items-center'>
+                      <WorldFlag style={{ marginRight: '8px', width: '20px', height: '17px', display: 'flex', }} code={country.code} />
+                      <p className=''>{country.name}</p>
+                    </div>
+                  </SelectItem>))}
+        </SelectContent>
+      </Select>
     )
-}
+  }
+
+  
+  export function SelectTheme({title}:{title:string}) {
+      const [themes, setThemes] = useState([] as countries[])
+      async function getThemes() {
+        const { data, error } = await supabaseClient()
+          .from('themes')
+          .select('*') // Ou especifique as colunas: .select('id, name')
+          .order('name', { ascending: true }) // Ordena pelo nome
+        // .limit(20); // Retorna apenas 20 resultados
+        console.log('themer=>', data)
+        if (error) {
+          console.error('Erro ao buscar países:', error);
+          return [];
+        }
+        setThemes(data)
+        return data;
+      }
+      useEffect(() => {
+        getThemes()
+      }, [])
+    return (
+      <Select>
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder={`Filtrar por ${title}`} />
+        </SelectTrigger>
+        <SelectContent>
+        {themes.map((theme, key) => (
+                  <SelectItem key={theme.id} className='flex flex-row  cursor-pointer hover:bg-blue-50' style={{ display: "flex" }} value={theme.name as string}>
+                    <div className='flex align-middle justify-center items-center'>
+                      <p className=''>{theme.name}</p>
+                    </div>
+                  </SelectItem>))}
+        </SelectContent>
+      </Select>
+    )
+  }
+
+  export function SelectDemo() {
+    return (
+      <Select>
+        <SelectTrigger className="w-[180px]">
+          <SelectValue placeholder="Select a fruit" />
+        </SelectTrigger>
+        <SelectContent>
+
+            <SelectItem value="apple">Apple</SelectItem>
+            <SelectItem value="banana">Banana</SelectItem>
+            <SelectItem value="blueberry">Blueberry</SelectItem>
+            <SelectItem value="grapes">Grapes</SelectItem>
+            <SelectItem value="pineapple">Pineapple</SelectItem>
+
+        </SelectContent>
+      </Select>
+    )
+  }
+  

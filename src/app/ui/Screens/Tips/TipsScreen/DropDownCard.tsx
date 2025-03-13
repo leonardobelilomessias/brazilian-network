@@ -1,19 +1,18 @@
 'use client' // Transforma em Client Component
 import React from 'react'   
 import { Button } from "@/components/ui/button"
+import { useTransition } from 'react'
+import { useToast } from '@/components/ui/use-toast'
+import Link from 'next/link'
+import { Edit2, EllipsisVertical, Trash } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { deleteTip } from '../CreateTipScreen/actions/delete-tip-action'
 
-
-import { useTransition } from 'react'
-import { useToast } from '@/components/ui/use-toast'
-import { deleteTip } from './actions'
-import Link from 'next/link'
-import { Edit2, EllipsisVertical, Trash } from 'lucide-react'
 
 export function DropdownCard({ tipId }: { tipId: string }) {
   const [isPending, startTransition] = useTransition()
@@ -25,6 +24,7 @@ const {toast} = useToast()
         console.log('id a ser deletado', tipId)
         toast({title: 'Dica excluída com sucesso!', })
       } catch (error) {
+        console.log(error)
         toast({title: 'Erro ao excluir dica'})
       }
     })
@@ -32,8 +32,8 @@ const {toast} = useToast()
 
   return (
     <DropdownMenu   >
-      <DropdownMenuTrigger asChild >
-        <Button variant="outline" className=' border-0 '><EllipsisVertical size={20}/></Button>
+      <DropdownMenuTrigger  >
+        <EllipsisVertical size={20}/>
       </DropdownMenuTrigger>
       
       <DropdownMenuContent className="w-44">

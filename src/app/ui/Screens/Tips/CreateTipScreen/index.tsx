@@ -59,7 +59,7 @@ export function CreateTipScreen({ userId }: { userId: string | undefined }) {
   const route = useRouter()
   const [user, setUser] = useState<User | null>()
   async function getuser() {
-    const { data } = await supabaseClient.auth.getUser()
+    const { data } = await supabaseClient().auth.getUser()
     console.log('getuser', data)
     setUser(data.user)
 
@@ -170,7 +170,7 @@ type countries = {
 export function SelectCountry({ form }: { form: any }) {
   const [countries, setcountries] = useState([] as countries[])
   async function getCountries() {
-    const { data, error } = await supabaseClient
+    const { data, error } = await supabaseClient()
       .from('countries',)
       .select('*') // Ou especifique as colunas: .select('id, name')
       .order('name', { ascending: true }) // Ordena pelo nome
@@ -230,7 +230,7 @@ export function SelectCountry({ form }: { form: any }) {
 export function SelectTheme({ form }: { form: any }) {
   const [themes, setThemes] = useState([] as countries[])
   async function getThemes() {
-    const { data, error } = await supabaseClient
+    const { data, error } = await supabaseClient()
       .from('themes')
       .select('*') // Ou especifique as colunas: .select('id, name')
       .order('name', { ascending: true }) // Ordena pelo nome

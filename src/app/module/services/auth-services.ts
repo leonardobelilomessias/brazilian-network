@@ -62,7 +62,7 @@ async function deleteSession() {
     console.log('deletando sessao')
     cookies().delete('sessions')
     cookies().delete('user_id')
-    await supabaseClient.auth.signOut();
+    await supabaseClient().auth.signOut();
     const supabaseServer =  await createClient()
     await supabaseServer.auth.signOut()
 

@@ -1,4 +1,4 @@
-import { navigationElementsCommunity, navigationElementsTools } from "@/app/common/constants/navegationElements";
+import { navigationElements, navigationElementsCommunity, navigationElementsTools } from "@/app/common/constants/navegationElements";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import clsx from "clsx";
 import Link from "next/link";
@@ -11,8 +11,8 @@ export function AsideProductsButtons(){
         <>
         
                       
-                  {navigationElementsTools.map((element) => (
-                  <ButtonAsideNavigation key={element.title} element={element}/>
+                  {navigationElements.map((element) => (
+                  <ButtonAsideNavigation key={element.title} items={element.items}/>
                   ))}
 
         </>

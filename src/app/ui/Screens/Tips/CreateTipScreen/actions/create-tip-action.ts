@@ -4,12 +4,11 @@ import { createServerActionClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
-import { supabaseClient } from '@/lib/supabase/client'
 import { PostgrestSingleResponse } from '@supabase/supabase-js'
-
+import { createClient } from '@/utils/supabase/server'
 export const insertTip = async (data:any): Promise<PostgrestSingleResponse<null>> => {
-  
-  const resp = await supabaseClient
+  const supabase = await createClient()
+  const resp = await supabase 
   .from('tips')
   .insert([
     data

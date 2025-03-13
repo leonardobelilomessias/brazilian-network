@@ -4,7 +4,7 @@ import sanitizeHtml from 'sanitize-html';
 
 
 
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, UseFormReturn } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -24,11 +24,10 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import Link from 'next/link';
 import { supabaseClient } from '@/lib/supabase/client';
 import { User } from '@supabase/supabase-js';
-import { insertTip, updateTip } from './actions/edit-tip-action';
 import { toast, useToast } from '@/components/ui/use-toast';
 import { redirect, useRouter } from 'next/navigation';
-import { Edit2 } from 'lucide-react';
-import { Tip } from '../TipsScreen/types';
+import { updateTip } from './actions/edit-tip-action';
+import { ITip, Tip } from '@/app/types/TypesDB';
 // Função para extrair texto do HTML
 function extractTextFromHTML(html: string): string {
   const parser = new DOMParser();
@@ -38,12 +37,13 @@ function extractTextFromHTML(html: string): string {
 
 // Schema de validação Zod
 const formSchema = z.object({
+  id: z.string(),
   title: z.string().min(1, { message: "O título é obrigatório" }),
   theme_id: z.string().min(1, { message: "Você precisa selecionar um tema" }),
 
   country_id: z.string().min(1, { message: "Você precisa selecionar um pais " }),
-  
-  content: z.string().refine(
+
+  post: z.string().refine(
     (value) => {
       return extractTextFromHTML(value).trim().length >= 5;
     },
@@ -56,43 +56,50 @@ const formSchema = z.object({
 // Tipagem do tipo de dados do formulário
 type FormData = z.infer<typeof formSchema>;
 
-export function EditTipScreen({ userId, tip }: { userId: string | undefined , tip:Tip}) {
+export function EditTipScreen({ userId, tip }: { userId: string | undefined , tip:ITip}) {
   const { toast } = useToast()
   const route = useRouter()
   const [user, setUser] = useState<User | null>()
   async function getuser() {
-    const { data } = await supabaseClient.auth.getUser()
+    const { data } = await supabaseClient().auth.getUser()
     console.log('getuser', data)
     setUser(data.user)
 
-
   }
-  console.log('tip in edit tip screen ',tip)
   const form = useForm<FormData>({
     mode: "onTouched",
     resolver: zodResolver(formSchema),
     defaultValues: {
+      id: tip.id,
       title: tip.title,
-      country_id: tip.country_id.id,
-      theme_id: tip.theme_id.id,
-      content: tip.content,
+      post: tip.content,
+      country_id: tip?.country_id || undefined,
+      theme_id: tip.theme_id|| undefined,
     },
 
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const sanitizedContent = sanitizeContent(data.content);
-    data.content = sanitizedContent;
-    const updatedTip = Object.assign({}, tip, data);
-    console.log('updatedTip em form', {title:data.title,country_id:data.country_id,theme_id:data.theme_id,content:data.content,id:tip.id})
+
+    const sanitizedContent = sanitizeContent(data.post);
     try {
-    const resp = await updateTip({title:data.title,country_id:data.country_id,theme_id:data.theme_id,content:data.content,id:tip.id});
-    console.log('data send tip',resp);
-        if(resp.statusText==="Created"){
+    const resp = await updateTip(          {
+      id: data.id,
+      title: data.title,
+      content: sanitizedContent,
+      created_by: userId,
+      theme_id: data.theme_id,
+      country_id: data.country_id,
+      status:"approved"
+    })
+        if(resp.statusText==="updated"){
+          
+          console.log('data send tip',resp);
           toast({
+            title: "Dica atualizada",
             description: "Sua dica foi adicionada com sucesso.",
           })
-          route.push('/dicas/dica-criada')
+          // route.push('/dicas/dica-criada')
         }
         if(resp.error){
           console.log(resp.error)
@@ -114,10 +121,7 @@ export function EditTipScreen({ userId, tip }: { userId: string | undefined , ti
   }, [])
   return (
     <div className="max-w-3xl mx-auto py-5 container">
-      <div className='flex items-center gap-2 mb-8'>
-        <Edit2 size={24} />
-        <h1 className="text-2xl font-bold ">Editar Dica</h1>
-      </div>
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
@@ -138,10 +142,10 @@ export function EditTipScreen({ userId, tip }: { userId: string | undefined , ti
             )}
           />
           <SelectTheme form={form} />
-          <SelectCountry idCountry={tip.country_id.id} form={form} />
+          <SelectCountry form={form} />
           <FormField
             control={form.control}
-            name="content"
+            name="post"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Post</FormLabel>
@@ -155,8 +159,7 @@ export function EditTipScreen({ userId, tip }: { userId: string | undefined , ti
               </FormItem>
             )}
           />
-          <Button className="mt-4 bg-blue-400 text-white">Salvar</Button>
-
+          <Button className="mt-4">Enviar</Button>
         </form>
       </Form>
     </div>
@@ -170,33 +173,36 @@ type countries = {
   id: string
 }
 
-export function SelectCountry({ form, idCountry }: { form: any,idCountry:string }) {
+export function SelectCountry({ form }: { form: UseFormReturn<{
+  id: string;
+  title: string;
+  theme_id: string;
+  country_id: string;
+  post: string;
+}, any, undefined> }) {
   const [countries, setcountries] = useState([] as countries[])
-  const [countriesCode, setcountriesCode] = useState('')
-form
   async function getCountries() {
-    const { data, error } = await supabaseClient
+    const { data, error } = await supabaseClient()
       .from('countries',)
       .select('*') // Ou especifique as colunas: .select('id, name')
       .order('name', { ascending: true }) // Ordena pelo nome
     // .limit(20); // Retorna apenas 20 resultados
+    console.log(data)
     if (error) {
       console.error('Erro ao buscar países:', error);
       return [];
     }
     setcountries(data)
-    // setcountriesCode(data.filter((country) => country.id === form.formState.country_id)[0].code)
     return data;
   }
   useEffect(() => {
     getCountries()
   }, [])
-
   return (
     <>
       <div className='flex'>
-      {/* {JSON.stringify(countriesCode)} */}
-  
+
+      {JSON.stringify(form.getValues('country_id'))}
       </div>
       <FormField
         control={form.control}
@@ -204,7 +210,7 @@ form
         render={({ field }) => (
           <FormItem>
             <FormLabel>Selecione o pais</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value} >
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl >
                 <SelectTrigger>
                   <SelectValue placeholder="Seleciono e pais relacionado a dica " />
@@ -234,10 +240,16 @@ form
 }
 
 
-export function SelectTheme({ form }: { form: any }) {
+export function SelectTheme({ form }: { form:  UseFormReturn<{
+  id: string;
+  title: string;
+  theme_id: string;
+  country_id: string;
+  post: string;
+}, any, undefined> }) {
   const [themes, setThemes] = useState([] as countries[])
   async function getThemes() {
-    const { data, error } = await supabaseClient
+    const { data, error } = await supabaseClient()
       .from('themes')
       .select('*') // Ou especifique as colunas: .select('id, name')
       .order('name', { ascending: true }) // Ordena pelo nome

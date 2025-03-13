@@ -1,7 +1,6 @@
 import React, { use } from 'react';
 import Image from 'next/image';
 import { formatDate } from '@/app/util/FormatDate';
-import { Tip } from './types';
 import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -26,22 +25,10 @@ import {
 } from "lucide-react"
  
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+
 import { DropdownCard } from './DropDownCard';
 import AvatarDefault from '@/app/public/images/profile/default/avatar-default.jpg';
+import { Tip } from '@/app/types/TypesDB';
 interface TipCardProps {
   tip: Tip;
   userId: string | undefined;
@@ -57,20 +44,20 @@ export function TipCard({ tip,userId }: TipCardProps) {
           width={500} 
           height={500} 
           className='object-cover relative w-full h-full' 
-          src={tip.created_by.avatar_url ? tip.created_by.avatar_url : AvatarDefault} 
-          alt={tip.created_by.name} 
+          src={tip?.profile.avatar_url ? tip.profile.avatar_url : AvatarDefault} 
+          alt={tip?.profile?.full_name || "Avatar"} 
         />
       
             </Avatar>
             <div className="flex flex-col">
-              <span className="font-medium text-xs">{tip.created_by.name}</span>
+              <span className="font-medium text-xs">{tip.profile.full_name}</span>
               <div className="flex items-center text-xs text-muted-foreground">
                 <Calendar className="mr-1 h-3 w-3" />
                 <span>{formatDate(tip.created_at).extendTime}</span>
               </div>
             </div>
           </div>
-              { userId === tip.created_by.id && 
+              { userId === tip.profile.id && 
 
           <div>
             <DropdownCard tipId={tip.id}  />
@@ -80,17 +67,7 @@ export function TipCard({ tip,userId }: TipCardProps) {
         <Link href={`/dica/${tip.id}`}>
 
         <CardContent className="">
-          {tip.image_url && (
-            <div className="rounded-lg overflow-hidden">
-              <Image
-                src={tip.image_url}
-                alt={tip.title}
-                width={600}
-                height={400}
-                className="w-full h-auto object-cover"
-              />
-            </div>
-          )}
+
 
           <h3 className="text-md font-semibold">
             {tip.title}
@@ -104,10 +81,10 @@ export function TipCard({ tip,userId }: TipCardProps) {
         <CardFooter className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Badge variant="secondary">
-              {tip.theme_id.name}
+              {tip.theme.name}
             </Badge>
             <Badge variant="secondary">
-              {tip.country_id.name}
+              {tip.country.name}
             </Badge>
           </div>
           <div className="flex items-center text-blue-500">
@@ -121,28 +98,5 @@ export function TipCard({ tip,userId }: TipCardProps) {
 }
 
 
-// export function DropdownCard() {
-//   return (
-//     <DropdownMenu  >
-//       <DropdownMenuTrigger asChild >
-//         <Button variant="outline" ><EllipsisVertical/></Button>
-//       </DropdownMenuTrigger>
-//       <DropdownMenuContent className="w-44">
 
-//         <DropdownMenuItem className='flex items-center gap-2'>
-//           <Edit2 size={14}/>
-//           <span>Editar</span>
-//         </DropdownMenuItem>
-
-//         <DropdownMenuItem className='flex items-center gap-2'>
-//           <div className='flex items-center gap-2' >
-//           <Trash size={14}/>
-//           <span>Excluir</span>
-//           </div>
-//         </DropdownMenuItem>
-
-//       </DropdownMenuContent>
-//     </DropdownMenu>
-//   )
-// }
 

@@ -1,150 +1,136 @@
 "use client"
+import { FC, useState, useEffect } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button";
-import { FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage, Form } from "@/components/ui/form";
+import { FormField, FormItem, FormLabel, FormControl, FormMessage, Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
-import DatePicker from "react-datepicker";
 import { z } from "zod"
 import { useRouter } from "next/navigation";
 import { Pencil, Save } from "lucide-react";
 import "react-datepicker/dist/react-datepicker.css";
 import { useToast } from "@/components/ui/use-toast";
-import { useState } from "react";
-import { IUser } from "@/app/types/types";
-
-import {ptBR} from 'date-fns/locale';
+import { updateProfileById } from '@/lib/supabase/queries/profilesClient';
+import { ptBR } from 'date-fns/locale';
 import { registerLocale } from 'react-datepicker';
-import { updateUserById } from "@/lib/supabase/queries/usersClient";
+import { IProfile } from '@/app/types/TypesDB';
+import { updateUserById } from '@/lib/supabase/queries/server/user';
 registerLocale('pt-BR', ptBR);
 
-
-const formSchema = z.object({
+const profileFormSchema = z.object({
   id: z.string(),
-  email: z.string().email(),
-  name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
-  phone: z.string().nullable(),
+  user_name: z.string().min(3, 'Nome de usuário deve ter no mínimo 3 caracteres'),
+  full_name: z.string().min(3, 'Nome completo deve ter no mínimo 3 caracteres'),
   bio: z.string().optional(),
   origem: z.string().optional(),
-  current_in: z.string().optional(),
+  current_in: z.string().optional()
 });
 
+interface FormProfileProps {
+  userId: string;
+  initialData: IProfile;
+}
 
-export function FormProfile({ dataUser }: { dataUser: IUser }) {
-  const [edit, setEdit] = useState(false);
+interface ProfileFormData {
+  id: string;
+  user_name: string;
+  full_name: string;
+  bio?: string;
+  origem?: string;
+  current_in?: string;
+  
+}
+
+export const FormProfile: FC<FormProfileProps> = ({ userId, initialData }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  // Certifique-se de que o hook useForm é sempre chamado
+  const formMethods = useForm<any>({
+    resolver: zodResolver(profileFormSchema),
     defaultValues: {
-      id: dataUser.id,
-      email: dataUser.email || "",
-      name: dataUser.name || "",
-      phone: dataUser.phone || "",
-      bio: dataUser.bio || "",
-      origem: dataUser.origem || "",
-      current_in: dataUser.current_in || "",
-    },
+      id: userId,
+      user_name: initialData.user_name || '',
+      full_name: initialData.full_name || '',
+      bio: initialData.bio || '',
+      origem: initialData.origem || '',
+      current_in: initialData.current_in || ''
+    }
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      const preparedData: IUser = {
-        id: values.id,
-        email: values.email,
-        name: values.name,
-        phone: values.phone || undefined,
-        bio: values.bio,
-        origem: values.origem,
-        current_in: values.current_in,
-      };
+  const { register, handleSubmit, formState: { errors } } = formMethods;
 
-      await updateUserById(preparedData);
-      setEdit(false);
-      
+  const onSubmit = async (data: IProfile) => {
+    try {
+      setIsSubmitting(true);
+      await updateUserById(data);
       toast({
-        title: "Sucesso!",
-        description: "Perfil atualizado com sucesso.",
-        variant: "default",
+        title: "Sucesso",
+        description: "Perfil atualizado com sucesso!",
       });
-      
+      setIsEditing(false);
       router.refresh();
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
       toast({
-        title: "Erro!",
-        description: "Não foi possível atualizar o perfil.",
-        variant: "destructive",
+        title: "Erro",
+        description: "Erro ao atualizar perfil",
+        variant: "destructive"
       });
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <>
       <div className="flex justify-between">
         <p className="font-bold text-xl mb-3">Dados Pessoais</p>
-        <Button className="bg-blue-500" onClick={() => setEdit(true)}>
+        <Button className="bg-blue-500" onClick={() => setIsEditing(true)}>
           <Pencil size={16} className="mx-1" /> Editar Perfil
         </Button>
       </div>
 
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <Form {...formMethods}>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <FormField
-            control={form.control}
-            name="email"
+            control={formMethods.control}
+            name="user_name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="font-bold">Email</FormLabel>
+                <FormLabel className="font-bold">Nome de Usuário</FormLabel>
                 <FormControl>
-                  <Input disabled={true} placeholder="Digite seu Email" {...field} />
+                  <Input disabled={!isEditing} placeholder="Digite o nome de usuário" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
           <FormField
-            control={form.control}
-            name="name"
+            control={formMethods.control}
+            name="full_name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="font-bold">Nome</FormLabel>
+                <FormLabel className="font-bold">Nome Completo</FormLabel>
                 <FormControl>
-                  <Input disabled={!edit} placeholder="Digite seu Nome" {...field} />
+                  <Input disabled={!isEditing} placeholder="Digite o nome completo" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
           <FormField
-            control={form.control}
-            name="phone"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-bold">Telefone</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={!edit}
-                    placeholder="Digite seu Telefone"
-                    {...field}
-                    value={field.value || ''}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
+            control={formMethods.control}
             name="bio"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="font-bold">Biografia</FormLabel>
                 <FormControl>
                   <Textarea
-                    disabled={!edit}
+                    disabled={!isEditing}
                     placeholder="Conte um pouco sobre você..."
                     className="min-h-[100px]"
                     {...field}
@@ -155,14 +141,14 @@ export function FormProfile({ dataUser }: { dataUser: IUser }) {
             )}
           />
           <FormField
-            control={form.control}
+            control={formMethods.control}
             name="origem"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="font-bold">Origem</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={!edit}
+                    disabled={!isEditing}
                     placeholder="Cidade/Estado de origem"
                     {...field}
                   />
@@ -172,14 +158,14 @@ export function FormProfile({ dataUser }: { dataUser: IUser }) {
             )}
           />
           <FormField
-            control={form.control}
+            control={formMethods.control}
             name="current_in"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="font-bold">Localização Atual</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={!edit}
+                    disabled={!isEditing}
                     placeholder="Onde você está morando atualmente"
                     {...field}
                   />
@@ -190,7 +176,7 @@ export function FormProfile({ dataUser }: { dataUser: IUser }) {
           />
           <div className="py-4">
             <Button 
-              disabled={!edit} 
+              disabled={!isEditing || isSubmitting} 
               className="flex bg-blue-500 hover:bg-blue-600" 
               type="submit"
             >
@@ -199,6 +185,11 @@ export function FormProfile({ dataUser }: { dataUser: IUser }) {
           </div>
         </form>
       </Form>
+
+      <div suppressHydrationWarning>
+        {/* Conteúdo que pode variar entre servidor e cliente */}
+        {new Date().toLocaleTimeString()}
+      </div>
     </>
   );
 }

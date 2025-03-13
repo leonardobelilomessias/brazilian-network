@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { deleteCommentAction } from '../actions/comment-actions';
+import {  deleteCommentTip } from '@/lib/supabase/queries/server/Tips';
 
 interface DeleteCommentButtonProps {
   commentId: string;
@@ -16,7 +16,7 @@ export function DeleteCommentButton({ commentId, userId, currentUserId }: Delete
 
   const handleDelete = async () => {
     try {
-      const result = await deleteCommentAction(commentId);
+      const result = await deleteCommentTip(commentId);
       if (result.success) {
         toast({
           title: "Sucesso",

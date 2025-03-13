@@ -1,8 +1,15 @@
 import { parseISO, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
-export function formatDate(dateString: string) {
-  const date = parseISO(dateString);
+export function formatDate(dateInput: string | Date) {
+  let date: Date;
+
+  if (typeof dateInput === 'string') {
+    // Normaliza para um formato de data compatível com Date
+    date = dateInput.includes('T') ? new Date(dateInput) : parseISO(dateInput);
+  } else {
+    date = dateInput;
+  }
 
   return {
     extendTime: format(date, "dd 'de' MMMM 'de' yyyy", { locale: ptBR }),
@@ -16,6 +23,7 @@ export function formatDate(dateString: string) {
     timestamp: date.getTime()
   };
 }
+
 
 // Exemplo de uso
 // export function exampleUsage() {

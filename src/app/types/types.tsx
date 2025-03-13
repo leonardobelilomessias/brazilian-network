@@ -29,173 +29,18 @@ export interface IUser {
 }
 
 
-export interface INewPost{
-  name?: string;
-  id?: string;
-  title?: string;
-  message?: string;
-  created_at:Date,
-  updated_at:Date
-}
-
-export interface INewPostForm{
-
-  title: string;
-  message: string;
-}
-
-export interface INewSuportForm{
-
-  title: string;
-  message: string;
-}
-export interface INewSuport{
-  name: string;
+export interface IProfile {
   id: string;
-  title: string;
-  message: string;
-  created_at?:Date,
-  updated_at?:Date
+  name: string;
+  email: string;
+  phone: string;
+  bio: string;
+  origem: string;
+  current_in: string;
+  created_at: Date;
+  updated_at: Date;
 }
 
-export interface IPost{
-  id:string 
-  title:string
-  message:string 
-  name:string
-  date:Date
-}
 
-export interface IProduct{
-  id?:string
-  title: string;
-  description: string;
-  price: number;
-  address: string;
-  city: string;
-  neighborhood: string;
-  zip: string;
-  bedrooms: string;
-  bathrooms: string;
-  garages: string;
-  area: string;
-  cover:string
-  
-  amenities:  {
-    pool?: boolean;
-    porter?: boolean;
-    gym?: boolean;
-    private_area?: boolean;
-    lift?: boolean;
-    salon_party?: boolean;
-    playground?: boolean;
-    sauna?: boolean;
-    bike_rack?: boolean;
-    coworking?: boolean;
-    washing?: boolean;
-    handicapped?: boolean;
-    backyard?: boolean;
-    pet_place?: boolean;
-    service_area?: boolean;
-  }
-}
-
-export interface IFavorite{
-  id_favorite:string
-  id_user:string
-  id?:string
-  title: string;
-  description: string;
-  price: number;
-  address: string;
-  city: string;
-  neighborhood: string;
-  zip: string;
-  bedrooms: string;
-  bathrooms: string;
-  garages: string;
-  area: string;
-  cover:string
-  
-  amenities:  {
-    pool?: boolean;
-    porter?: boolean;
-    gym?: boolean;
-    private_area?: boolean;
-    lift?: boolean;
-    salon_party?: boolean;
-    playground?: boolean;
-    sauna?: boolean;
-    bike_rack?: boolean;
-    coworking?: boolean;
-    washing?: boolean;
-    handicapped?: boolean;
-    backyard?: boolean;
-    pet_place?: boolean;
-    service_area?: boolean;
-  }
-}
-
-export interface IProductResponse{
-  id?:string
-  title: string;
-  description: string;
-  price: string;
-  address: string;
-  city: string;
-  neighborhood: string;
-  zip: string;
-  bedrooms: string;
-  bathrooms: string;
-  garages: string;
-  area: string;
-  cover:string
-  
-  amenities:  {
-    item:boolean
-  }[]
-}
-export interface IVideoParams{
-id:string
-width?:number | undefined, 
-height?:number |undefined
-}
-export interface IAmenities {
-  pool?: boolean;
-  porter?: boolean;
-  gym?: boolean;
-  private_area?: boolean;
-  lift?: boolean;
-  salon_party?: boolean;
-  playground?: boolean;
-  sauna?: boolean;
-  bike_rack?: boolean;
-  coworking?: boolean;
-  washing?: boolean;
-  handicapped?: boolean;
-  backyard?: boolean;
-  pet_place?: boolean;
-  service_area?: boolean;
-}
-
-export interface IAppointment {
-  id?:string
-  user_id:string,
-  date:Date |undefined |null
-  type:"call"| "visit" |"whatsapp"|"video"
-  status:"confirmed"| "awaiting" |"cancelled"|"done"
-  created_at:Date
-}
-export interface IVideoParams{
-  width?:number | undefined, 
-  height?:number |undefined
-  }
-export interface INotifications{
-  id:string
-  id_user:string
-  created_at:Date
-  title:string
-  message:String
-}
 
 export interface INavigationElemets{ title: string, link: string, icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>> }

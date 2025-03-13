@@ -10,8 +10,9 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
   const pathname = usePathname()
 
   useEffect(() => { 
-    const { data: { subscription } } = supabaseClient.auth.onAuthStateChange(async (event) => {
+    const { data: { subscription } } = supabaseClient().auth.onAuthStateChange(async (event) => {
         console.log(event,'subscriptiom em dashboar ')
+
       if (event === 'SIGNED_OUT') {
         router.push(`/login?redirect=${encodeURIComponent(pathname)}`)
       }
