@@ -1,12 +1,7 @@
 'use server'
-
-
-import { AuthService } from "../services/auth-services";
-
+import { AuthService } from "./auth-services";
 import { createClient } from "@/utils/supabase/server";
 import { getUserByEmail } from "@/lib/supabase/queries/server/user";
-
-
 
 export async function singin(data:{email:string, password:string}) {
   const supabase = await createClient()
@@ -14,7 +9,6 @@ export async function singin(data:{email:string, password:string}) {
         const { email, password } = data;
         const userCredential = await supabase.auth.signInWithPassword({email, password,});
         const user = userCredential.data.user;
-         console.log("data singinwithpassword cliente", )
         if(!user?.id){
           throw new Error().name = userCredential.error?.code as string
           
@@ -24,8 +18,6 @@ export async function singin(data:{email:string, password:string}) {
           await AuthService.createSessionToken({user_id:user.id,token_supabase:userCredential.data.session.access_token}) 
         }
         return user
-        console.log("Usuário logado com sucesso:", user);
-        // Aqui você pode redirecionar o usuário ou realizar outra ação após o login bem-sucedido
       } catch (error) {
 
           console.log("Erro em auth singin:", error);

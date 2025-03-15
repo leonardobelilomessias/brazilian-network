@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { getProfileById } from '@/lib/supabase/queries/profilesClient';
-import { IProfile } from '@/app/types/types';
+import { IProfile } from '@/app/types/TypesDB';
 
 interface UseProfileProps {
   userId: string;

@@ -1,23 +1,25 @@
 import { axiosApi } from "@/lib/axios/axios";
+import { supabaseClient } from "@/lib/supabase/client";
+import { User } from "@supabase/supabase-js";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
 const ContextUserAccont = createContext({} as IDataAccont);
 interface IDataAccont{
-    favoritesList:string[]
+    dataUser:User | null |undefined
 }
 function AccountCountext({children}:{children:ReactNode}){
-    const [userFavoritesList,setUserFavoristeList] = useState([])
-async function getFavorites() {
-    const favoritesUser =  await axiosApi.get("/api/getUserFavoritesListIds")
-    setUserFavoristeList(favoritesUser.data)
-    console.log("favoristos usuario", favoritesUser) 
+    const [dataUser,setDataUser] = useState<User | null>()
+    async function getDatauser() {
+    const {data : {user}} =await  supabaseClient().auth.getUser()
+    setDataUser(user)
+    console.log("data  usuario", user) 
     
 }    
     useEffect(()=>{
-        getFavorites()
+        getDatauser()
     },[])
     return(
-        <ContextUserAccont.Provider value={{favoritesList:userFavoritesList}}>
+        <ContextUserAccont.Provider value={{dataUser:dataUser}}>
             {children}
         </ContextUserAccont.Provider>
     )

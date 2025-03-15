@@ -1,19 +1,7 @@
 'use server'
-
-import { createServerActionClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
 import { revalidatePath } from 'next/cache'
-import { z } from 'zod'
-import { supabaseClient } from '@/lib/supabase/client'
 import { PostgrestSingleResponse } from '@supabase/supabase-js'
-
-import { title } from 'process'
 import { createClient } from '@/utils/supabase/server'
-
-
-
-
-
 
 export const updateTip = async (data:any): Promise<PostgrestSingleResponse<null>> => {
   const supabase = await createClient()

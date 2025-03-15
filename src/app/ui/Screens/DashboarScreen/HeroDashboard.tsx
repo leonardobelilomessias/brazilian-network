@@ -1,5 +1,4 @@
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import img from '@/app/assets/pilot.png'
 export function HeroDashboard(){

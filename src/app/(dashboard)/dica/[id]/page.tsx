@@ -1,6 +1,5 @@
 import { TipScreen } from "@/app/ui/Screens/Tips/TipScreen";
 
-
 interface TipPageProps {
   params: {
     id: string;

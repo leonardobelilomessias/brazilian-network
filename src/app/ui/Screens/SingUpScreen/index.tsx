@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { FormSignup } from "./FormSignup";
 import Link from "next/link";
-import HeroSingup from '@/app/public/images/herosingup.jpg'
 import HeroSingup2 from '@/app/public/images/Landing/hero-flags.png'
 import { Navbar } from "@/components/Navbar";
 

@@ -1,9 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { AuthService } from './app/module/services/auth-services';
-import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
 import { updateSession } from './utils/supabase/middleware';
-
-
 
 export const config = {
   matcher: '/((?!_next/static|_next/image|favicon.ico).*)',

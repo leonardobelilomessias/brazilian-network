@@ -1,9 +1,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import TravelImage from '@/app/public/images/travel5.jpg'
 import StudiesImage from '@/app/public/images/Landing/studies.png'
-// import { GitHubLogoIcon } from "@radix-ui/react-icons";
 
 export const Studies = () => {
   return (

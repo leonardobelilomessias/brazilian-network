@@ -1,6 +1,5 @@
 'use client' // Transforma em Client Component
 import React from 'react'   
-import { Button } from "@/components/ui/button"
 import { useTransition } from 'react'
 import { useToast } from '@/components/ui/use-toast'
 import Link from 'next/link'

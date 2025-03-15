@@ -1,23 +1,10 @@
 'use client'
 import { useState } from "react";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { Bell, BotOff, Hotel, LogOut, Menu } from "lucide-react";
-import { FaGithub } from "react-icons/fa";
+import {Sheet,SheetContent,SheetTrigger,} from "@/components/ui/sheet";
+import { Bell, Menu } from "lucide-react";
 import Link from "next/link";
-import { LogoIcon } from "@/components/Icons";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { navigationElements, navigationElementsAccount, navigationElementsCommunity, navigationElementsTools } from "@/app/common/constants/navegationElements";
+import { navigationElements} from "@/app/common/constants/navegationElements";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
 import { Separator } from "@/components/ui/separator";

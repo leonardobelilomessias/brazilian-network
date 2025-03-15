@@ -1,18 +1,8 @@
 'use client'
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+
 import { FormProfile } from '../FormProfile';
 import { AvatarUpload } from '../components/AvatarUpload';
 import { IProfile } from '@/app/types/TypesDB';
-
-
-interface UserProfile {
-    name: string;
-    email: string;
-    id: string;
-    avatar_url?: string;
-    // Add other profile fields as needed   
-}
 
 const EditProfile: React.FC<{ user: IProfile }> = ({ user }) => {
   

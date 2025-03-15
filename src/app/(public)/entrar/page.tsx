@@ -5,10 +5,5 @@ export const metadata: Metadata = {
     title: 'Entrar',
   };
 export default function login(){
-    return(
-    <>
-    <LoginScreen/>
-    </>
-
-    )
+    return(<LoginScreen/>)
 }

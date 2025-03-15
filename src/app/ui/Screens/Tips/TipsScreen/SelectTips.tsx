@@ -6,7 +6,6 @@ import { Filter, Search, SlidersHorizontal } from "lucide-react";
 import { useEffect, useState } from "react";
 import WorldFlag from 'react-world-flags';
 
-
 export function SelectGroup() {
     return (
         <div>
@@ -14,7 +13,7 @@ export function SelectGroup() {
             <div className="flex gap-4 align-bottom items-end  mt-1">
                 <SelectTheme title="Tema"/>
                 <SelectCountry title="Pais" />
-                <Button size={'sm'} className=" bg-blue-500 text-sm  flex gap-2 "> <Search size={16} /><p>Filtrar</p> </Button>
+                <Button size={'sm'} className="  text-sm border-blue-500 bg-white border flex gap-2 text-blue-500 "> <Search size={16} /><p>Filtrar</p> </Button>
             </div>
         </div>
     );
@@ -103,22 +102,4 @@ export function SelectCountry({title}:{title:string}) {
     )
   }
 
-  export function SelectDemo() {
-    return (
-      <Select>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Select a fruit" />
-        </SelectTrigger>
-        <SelectContent>
 
-            <SelectItem value="apple">Apple</SelectItem>
-            <SelectItem value="banana">Banana</SelectItem>
-            <SelectItem value="blueberry">Blueberry</SelectItem>
-            <SelectItem value="grapes">Grapes</SelectItem>
-            <SelectItem value="pineapple">Pineapple</SelectItem>
-
-        </SelectContent>
-      </Select>
-    )
-  }
-  

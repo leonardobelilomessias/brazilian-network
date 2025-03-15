@@ -3,7 +3,6 @@ import { createClient } from '@/utils/supabase/server'
 import * as jose from 'jose'
 import { cookies } from 'next/headers'
 
-
 async function openSessionToken(token: string) {
     const secret = new TextEncoder().encode(process.env.AUTH_SECRET)
     const { payload } = await jose.jwtVerify(token, secret)

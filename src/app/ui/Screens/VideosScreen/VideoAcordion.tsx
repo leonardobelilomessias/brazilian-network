@@ -5,7 +5,7 @@ import {
     AccordionTrigger,
   } from "@/components/ui/accordion"
 import { Separator } from "@radix-ui/react-dropdown-menu"
-import { Play, TvMinimalPlayIcon, Video, Youtube } from "lucide-react"
+import {Youtube } from "lucide-react"
 import Link from "next/link"
   
   export function VideoAccordion() {

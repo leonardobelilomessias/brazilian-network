@@ -1,8 +1,7 @@
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { CalendarDays, TvMinimalPlay } from "lucide-react";
+import {  TvMinimalPlay } from "lucide-react";
 import { VideoAccordion } from "./VideoAcordion";
-import { VideoPlayer } from "../../components/Videoplayer";
 
 
 export function VideosScreen(){
@@ -17,11 +16,6 @@ export function VideosScreen(){
                 <CardDescription>
                     Melhores videos para você está por dentro do tudo!
                 </CardDescription>
-                {/* <div className="bg-grat-50 gap-4 flex p-4 ">
-                    <VideoCard/>
-                    <VideoCard/>
-
-                </div> */}
                 <CardContent>
                 <VideoAccordion/>
                     

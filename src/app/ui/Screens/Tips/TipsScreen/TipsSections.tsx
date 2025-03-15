@@ -1,13 +1,10 @@
 import React from 'react';
 import { TipCard } from './TipCard';
 import { Button } from "@/components/ui/button";
-import { Sparkles, ChevronRight, SquarePlus } from "lucide-react";
+import { SquarePlus } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import Link from 'next/link';
 import { Tip, TipsSectionProps } from '@/app/types/TypesDB';
-
-
-
 
 export const TipsSection: React.FC<TipsSectionProps> = ({ data , title, iconTitle}) => {
   const tips = data.tips as Tip[];

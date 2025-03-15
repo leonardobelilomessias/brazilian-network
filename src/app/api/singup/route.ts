@@ -1,7 +1,5 @@
-// import { singin } from "@/modules/auth/actions/auth-actions";
-// import { AuthService } from "@/modules/auth/services/auth-services";
-import { singin, singup } from "@/app/module/actions/auth-actions";
 
+import { singin, singup } from "@/app/module/auth/auth-actions";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {

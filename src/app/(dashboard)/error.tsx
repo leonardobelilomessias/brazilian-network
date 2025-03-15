@@ -20,7 +20,7 @@ export default function Error({
     <main className="flex h-full flex-col items-center justify-center pt-10 gap-5">
       <h2 className="text-center font-bold ">Algo deu errado!</h2>
       <p>Tente novamente ou entre em contato com o suporte de nossa equipe</p>
-      <Button className='w-[150px]'
+      <Button className='w-[150px] bg-blue-500'
         onClick={
           // Attempt to recover by trying to re-render the invoices route
           () => reset()
@@ -29,7 +29,7 @@ export default function Error({
         Tentar novamente
       </Button>
       <Link href='/suporte'>
-        <Button className='w-[150px]'>
+        <Button className='w-[150px] bg-blue-500'>
           Chamar Suporte
         </Button>
       </Link>

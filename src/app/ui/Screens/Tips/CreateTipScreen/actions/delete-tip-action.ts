@@ -4,7 +4,6 @@ import { createClient } from "@/utils/supabase/server"
 
   export const deleteTip = async (tipId: string) => {
 
-    
     // Verificar autenticação
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()

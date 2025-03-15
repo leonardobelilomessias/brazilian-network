@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar } from '@/components/ui/avatar';
 import Image from 'next/image';
 import AvatarDefault from '@/app/public/images/profile/default/avatar-default.jpg';
 import { EditIcon } from 'lucide-react';

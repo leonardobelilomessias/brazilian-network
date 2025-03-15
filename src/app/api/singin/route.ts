@@ -1,17 +1,12 @@
-// import { singin } from "@/modules/auth/actions/auth-actions";
-// import { AuthService } from "@/modules/auth/services/auth-services";
-import { singin } from "@/app/module/actions/auth-actions";
-import { NextApiRequest, NextApiResponse } from "next";
+
+import { singin } from "@/app/module/auth/auth-actions";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
     try{
         const {email, password} = await request.json() 
         const response = await singin({email,password})
-        if(response?.id){   
-
-        NextResponse.redirect('/dashboard')
-        }
+        if(response?.id) NextResponse.redirect('/dashboard')
         return NextResponse.json(response)
     }
     catch(error:any){

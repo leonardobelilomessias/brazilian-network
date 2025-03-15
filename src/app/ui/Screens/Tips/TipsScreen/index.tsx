@@ -1,17 +1,14 @@
 
 import React from 'react';
-import { TipsSection } from './TipsSections';
 import { createClient } from '@/utils/supabase/server';
-import { Clock, Clock2, Lightbulb, Plus, Sparkles } from 'lucide-react';
-import { SelectGroup } from './SelectTips';
+import { Plus, Sparkles } from 'lucide-react';
 import { Separator } from '@radix-ui/react-dropdown-menu';
 import { Tip, TipsFull } from '@/app/types/TypesDB';
 import { fetchTips } from '@/lib/supabase/queries/server/Tips';
 import { EmptyContainer } from '../EmptyTipsContainer';
-import GenericTipList from '@/app/ui/components/GenericListTips';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import ListTipsWithPagination from '@/app/ui/components/ListTipsWithPagination';
+import { AllTips } from './AllTips';
 
 export async function TipsScreen() {
   const supabase = await createClient()
@@ -23,7 +20,7 @@ export async function TipsScreen() {
 
   return (
     <div className=" container mx-auto max-w-5xl py-8 px-2">
-      <div className='flex gap-8'>
+      <div className='flex justify-between'>
         <div>
             <h1 className='text-2xl font-bold'>Dicas</h1>
             <p className='text-sm text-gray-500 '>Encontre e  crie dicas sobre paises que você imigrou ou pretende imigrar.</p>
@@ -34,12 +31,12 @@ export async function TipsScreen() {
       </div>
       
       <Separator className='h-2'/>
-      <SelectGroup />
+      {/* <SelectGroup /> */}
       {
         tips.length === 0 ? 
         <EmptyContainer title='Dicas em Destaque' iconTitle={Sparkles} />
         :
-        <ListTipsWithPagination  items={{ icon:Lightbulb, linkButton:"/dicas", title:"Todas Dicas",tips:tips, userId:user?.id, hasButton:false }} />
+        <AllTips   />
       }
 
     </div>

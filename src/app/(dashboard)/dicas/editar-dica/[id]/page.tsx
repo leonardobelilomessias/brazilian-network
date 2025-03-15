@@ -10,17 +10,11 @@ interface EditTipPageProps {
 export default async function editTip({ params }: EditTipPageProps){
     const supabase =    await createClient()
     const {data} = await supabase.auth.getUser()
-    // console.log(data,'servidor ciar dica')
     const user_id = data.user?.id || ''
     const tip = await getTipById(params.id)
-
-    if(!tip){return ( <p>não encontada</p>)}else{
+    if(!tip?.id)return <p>nao encontrada</p>
+    return ( 
 
       <EditTipScreen userId={user_id} tip={tip} />
-    }
-
-    return(
-        <>
-        </>
     )
 }

@@ -11,15 +11,8 @@ export default async function metas({params}:IParams) {
     const supabase = await createClient();
     const {data:{user}}  =await  supabase.auth.getUser()
     const {data, error} = await supabase.from('profiles').select('*').eq('id', user?.id).single()
-    if(error) {
-        console.error(error)
-    }
-    if(!data) {
-        console.error('User not found')
-    }
+    if(error) console.error(error)
+    if(!data) console.error('User not found')
     const foundUser = data
-    return(
-
-        <ProfileScreen user={foundUser}/>
-    )
+    return(<ProfileScreen user={foundUser}/>)
 }

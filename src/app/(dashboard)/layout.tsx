@@ -1,13 +1,12 @@
 import { Navbar } from "@/components/Navbar"
 
 import "../globals.css";
-import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu"
 import { NavbarDashboard } from "../ui/Screens/DashboarScreen/NavbarDashboard/NavbarDashboard";
 import { Footer } from "@/components/Footer";
 import { AsideDashBoard } from "../ui/components/AsideDashboard";
 import { Metadata } from "next";
 import { Toaster } from "@/components/ui/toaster";
-import { inter, nunito } from "../ui/fonts";
+import { inter } from "../ui/fonts";
 
 
 export const metadata: Metadata = {
@@ -23,13 +22,9 @@ export default  function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-
-  const classAside=[]
   
-
   return (
     <html lang="pt-br"  style={{paddingTop:0,marginTop:0, boxSizing: 'border-box'}}>
-
       <body className={`${inter.className} antialiased`}>
       <main>
           <div>

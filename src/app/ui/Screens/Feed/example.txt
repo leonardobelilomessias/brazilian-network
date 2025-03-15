@@ -1,8 +1,0 @@
-  const [tips, setTips] = useState([] as TipsFull[])
-  async   function getTips(){
-    const tipsResp = await fetchTips()
-    setTips(tipsResp) 
-  } 
-  useEffect(()=>{
-    getTips()
-  },[])

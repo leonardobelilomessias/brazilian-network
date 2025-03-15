@@ -121,7 +121,6 @@ export function EditTipScreen({ userId, tip }: { userId: string | undefined , ti
   }, [])
   return (
     <div className="max-w-3xl mx-auto py-5 container">
-
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
@@ -202,7 +201,6 @@ export function SelectCountry({ form }: { form: UseFormReturn<{
     <>
       <div className='flex'>
 
-      {JSON.stringify(form.getValues('country_id'))}
       </div>
       <FormField
         control={form.control}

@@ -1,9 +1,6 @@
 "use client";
 import WorldFlag from 'react-world-flags';
 import sanitizeHtml from 'sanitize-html';
-
-
-
 import { useForm, SubmitHandler } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,12 +18,11 @@ import { RichTextEditor } from "./RichTextEditor";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from 'react';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
-import Link from 'next/link';
 import { supabaseClient } from '@/lib/supabase/client';
 import { User } from '@supabase/supabase-js';
 import { insertTip } from './actions/create-tip-action';
-import { toast, useToast } from '@/components/ui/use-toast';
-import { redirect, useRouter } from 'next/navigation';
+import {  useToast } from '@/components/ui/use-toast';
+import {  useRouter } from 'next/navigation';
 // Função para extrair texto do HTML
 function extractTextFromHTML(html: string): string {
   const parser = new DOMParser();

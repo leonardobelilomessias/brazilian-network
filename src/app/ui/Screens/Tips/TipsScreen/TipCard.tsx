@@ -1,31 +1,11 @@
-import React, { use } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import { formatDate } from '@/app/util/FormatDate';
 import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { ThumbsUp, Calendar, Menu, EllipsisVertical, EllipsisIcon, Edit2, Trash } from "lucide-react";
+import { ThumbsUp, Calendar } from "lucide-react";
 import Link from 'next/link';
-import { Separator } from '@/components/ui/separator';
-import {
-  Cloud,
-  CreditCard,
-  Github,
-  Keyboard,
-  LifeBuoy,
-  LogOut,
-  Mail,
-  MessageSquare,
-  Plus,
-  PlusCircle,
-  Settings,
-  User,
-  UserPlus,
-  Users,
-} from "lucide-react"
- 
-import { Button } from "@/components/ui/button"
-
 import { DropdownCard } from './DropDownCard';
 import AvatarDefault from '@/app/public/images/profile/default/avatar-default.jpg';
 import { Tip } from '@/app/types/TypesDB';

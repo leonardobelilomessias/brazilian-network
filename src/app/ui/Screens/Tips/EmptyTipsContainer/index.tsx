@@ -3,11 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Sparkles, ChevronRight, SquarePlus } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import Link from 'next/link';
-import { Tip, TipsSectionProps } from '@/app/types/TypesDB';
-import { TipCard } from '../TipsScreen/TipCard';
 
 export function EmptyContainer({link , title, iconTitle,titleButton}:{ link?: string, title:string, iconTitle: any,titleButton?:string}) {
-
   return (
     <section className="container max-w-4xl mx-auto py-8 space-y-2 ">
       <div className="flex justify-between items-center ">
