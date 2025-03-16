@@ -1,6 +1,6 @@
 'use client'
 import { TipsFull } from '@/app/types/TypesDB';
-import { fetchTipsPagination } from '@/lib/supabase/queries/server/fetchTipsPagination';
+import { fetchTipsPagination, fetchTipsPaginationWithSelect } from '@/lib/supabase/queries/server/fetchTipsPagination';
 import { Timer } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useUserData } from '@/context/ContextUserAccont';
@@ -11,16 +11,37 @@ import { GenericPagination } from '@/app/ui/components/Pagination/GenericPaginat
 import { SelectGroup } from './SelectTips';
 import { supabaseClient } from '@/lib/supabase/client';
 import { User } from '@supabase/supabase-js';
+import useSWR, {mutate} from 'swr';
+import { useSelectStoreContry, useSelectStoreTheme } from './stores/selectStore';
 
+const fetcher = async ([page, limit,selectedValueTheme,selectedValueCountry]: [number, number,string,string]) => {
+    console.log('buscando ....')
+  const result = await fetchTipsPaginationWithSelect(page, limit,selectedValueTheme,selectedValueCountry,);
+  console.log(result)
+  return result;
+};
 
 export function AllTips() {
-    const { dataUser } = useUserData()
+  const { selectedValueTheme, setSelectedValueTheme } = useSelectStoreTheme();
+  const { selectedValueCountry } = useSelectStoreContry();
+
+
     const [user,setUser] = useState<User|null>()
-    const [tips, setTips] = useState<TipsFull[]>([]);
+    const { dataUser } = useUserData();
     const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
-    const [loading, setLoading] = useState(true)
-    const limit = 5; // Número de dicas por página
+    const limit = 5;
+    function onDeleteTip(){
+      mutate([currentPage, limit, selectedValueTheme,selectedValueCountry])
+    }
+    // Configuração do SWR
+    const { data, error, isLoading } = useSWR(
+      [currentPage, limit,selectedValueTheme,selectedValueCountry],
+      fetcher,
+      {
+        revalidateOnFocus: true,
+        keepPreviousData: true,
+      }
+    );
     async function getDatauser(){
 
         const {data:{user}} = await supabaseClient().auth.getUser()
@@ -28,34 +49,14 @@ export function AllTips() {
     }
 
     // Função para carregar as dicas
-    const loadTips = async (page: number) => {
-        setLoading(true)
-        try {
-            const { tips: fetchedTips, totalPages: fetchedTotalPages } = await fetchTipsPagination(page, limit);
-            setTips(fetchedTips);
-            setTotalPages(fetchedTotalPages);
-        } catch (error) {
-            setLoading(false)
 
-            console.error('Erro ao carregar dicas:', error);
-        } finally {
-            setLoading(false)
-
-        }
-    };
 
     // Carrega as dicas ao mudar a página
     useEffect(() => {
         getDatauser()
-        loadTips(currentPage);
     }, [currentPage]);
 
-    // Função para mudar de página
-    const handlePageChange = (newPage: number) => {
-        if (newPage >= 1 && newPage <= totalPages) {
-            setCurrentPage(newPage);
-        }
-    };
+
 
     return (
         <SectionContainer IconTitle={Timer} title='Últimas Dicas' className=''>
@@ -64,15 +65,15 @@ export function AllTips() {
             <CardTipsContainer>
                 {
 
-                    loading ? 'carregando..' :
-                        tips.map((tipFull) => (
-                            <TipCard currentUser={user?.id || ''} key={tipFull.id}  tipFull={tipFull} />
+                    isLoading ? 'carregando..' :
+                        data?.tips.map((tipFull) => (
+                            <TipCard onDelete={onDeleteTip} currentUser={user?.id || ''} key={tipFull.id}  tipFull={tipFull} />
                         ))
                 }
             </CardTipsContainer>
                 <GenericPagination
                     currentPage={currentPage}
-                    totalPages={totalPages}
+                    totalPages={data?.totalPages as number}
                     onPageChange={(page) => setCurrentPage(page)}
                 />
         </SectionContainer>

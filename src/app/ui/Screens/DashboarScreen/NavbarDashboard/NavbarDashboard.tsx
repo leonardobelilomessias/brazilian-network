@@ -1,8 +1,9 @@
 'use server'
-import {NavigationMenu,NavigationMenuItem,NavigationMenuList} from "@/components/ui/navigation-menu";
-import {  Compass} from "lucide-react";
+import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "@/components/ui/navigation-menu";
+import { Compass } from "lucide-react";
 import { NavMenuMobile } from "./NavMenuMobile";
-import { ButtonDignOut } from "./ButtonSignOut";
+import { ButtonSignOut } from "./ButtonSignOut";
+import Link from "next/link";
 
 export const NavbarDashboard = () => {
 
@@ -11,18 +12,18 @@ export const NavbarDashboard = () => {
       <NavigationMenu className="flex   ">
         <NavigationMenuList className=" h-14 px-4 min-w-[100vw] md:min-w-[95vw] flex justify-between ">
           <NavigationMenuItem className="font-bold flex">
-            <a
+            <Link
               rel="noreferrer noopener"
               href="/dashboard"
               className="ml-2 font-bold text-xl flex"
             >
               <Compass />
               Brazilian Network
-            </a>
+            </Link>
           </NavigationMenuItem>
-          <div className="flex gap-5">
-          <NavMenuMobile/>
-        <ButtonDignOut/>
+          <div className="flex gap-5 items-center">
+            <NavMenuMobile />
+            <ButtonSignOut />
           </div>
         </NavigationMenuList>
       </NavigationMenu>

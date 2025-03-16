@@ -29,7 +29,7 @@ export default function ListTipsWithPagination({ items }: { items: ItemsPros }) 
                             {
                                 tipFull.profile?.id ===  items.userId &&                             
                                       <div className='absolute right-0 top-0 sm:right-2 sm:top-2 w-8'>
-                                        <DropdownCard tipId={tipFull.id}  />
+                                        <DropdownCard onDelete={()=>null} tipId={tipFull.id}  />
                                       </div>
                             }
                             <h3 className="font-medium text-gray-800 mb-1 text-sm md:text-base line-clamp-1">{tipFull.title}</h3>

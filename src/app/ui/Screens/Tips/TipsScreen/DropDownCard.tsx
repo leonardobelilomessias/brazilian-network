@@ -11,15 +11,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { deleteTip } from '../CreateTipScreen/actions/delete-tip-action'
+import {mutate} from 'swr'
 
 
-export function DropdownCard({ tipId }: { tipId: string }) {
+export function DropdownCard({ tipId , onDelete}: { tipId: string,onDelete:()=>void }) {
   const [isPending, startTransition] = useTransition()
 const {toast} = useToast()
   const handleDelete = () => {
     startTransition(async () => {
       try {
         await deleteTip(tipId)
+        onDelete()
         console.log('id a ser deletado', tipId)
         toast({title: 'Dica excluída com sucesso!', })
       } catch (error) {

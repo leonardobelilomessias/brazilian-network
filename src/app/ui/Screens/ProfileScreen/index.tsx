@@ -11,7 +11,7 @@ export const ProfileScreen = async ({user}:{user:any}) => {
   return (
     <ContainerScreen>
         <ProfileHeader user={user} />
-        <GenericTipList items={{tips,icon:Lightbulb, linkButton:"/dicas", title:"Dicas", userId:user?.id}} />
+        <GenericTipList  />
     </ContainerScreen>
   );
 };

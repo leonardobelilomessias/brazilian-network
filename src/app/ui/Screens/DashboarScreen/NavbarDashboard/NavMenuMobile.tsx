@@ -8,9 +8,10 @@ import { navigationElements} from "@/app/common/constants/navegationElements";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LucideProps } from "lucide-react";
 import { ForwardRefExoticComponent, RefAttributes } from "react";
+import { AvatarHeader } from "./AvatarHeader";
+import { AccontProvider } from "@/context/ContextUserAccont";
 
 interface RouteProps {
   href: string;
@@ -47,7 +48,7 @@ export function NavMenuMobile() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const pathname = usePathname()
   return (
-    <>
+    <AccontProvider>
       <span className="flex md:hidden">
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger className="px-2">
@@ -71,14 +72,12 @@ export function NavMenuMobile() {
         </nav>
 
         <div className="hidden md:flex gap-2 items-center">
-          <Avatar className="w-[30px] h-[30px]">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+          <AvatarHeader/>
+          
         </div>
 
       </div>
-    </>
+    </AccontProvider>
   )
 }
 
@@ -116,12 +115,3 @@ export function MobileNavigationMenu({ sections }: { sections: NavigationSection
   );
 }
 
-function FeatureLabel({ status }: { status: string }) {
-  const borderColor = status === 'Novo' ? 'border-blue-500' : 'border-gray-500';
-  const textColor = status === 'Novo' ? 'text-blue-500' : 'text-gray-500';
-  return (
-    <div className={`flex items-center gap-2 ${borderColor} ${textColor}`}>
-      {status}
-    </div>
-  );
-}

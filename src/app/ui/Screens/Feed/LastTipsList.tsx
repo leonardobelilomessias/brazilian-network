@@ -8,53 +8,38 @@ import SectionContainer from '../../components/Containers/SectionContainer';
 import CardTipsContainer from '../../components/Containers/CardsTipsContainer';
 import { TipCard } from '../../components/TipCard';
 import { useUserData } from '@/context/ContextUserAccont';
-
+import useSWR,{mutate} from 'swr';
+const fetcher = async ([page, limit]: [number, number]) => {
+  const result = await fetchTipsPagination(page, limit);
+  return result;
+};
 export function LastTipsList() {
-  const {dataUser} = useUserData()
-  const [tips, setTips] = useState<TipsFull[]>([]);
+  const { dataUser } = useUserData();
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const[loading,setLoading] = useState(true)
-  const limit = 5; // Número de dicas por página
-
-  // Função para carregar as dicas
-  const loadTips = async (page: number) => {
-    setLoading(true)
-    try {
-      const { tips: fetchedTips, totalPages: fetchedTotalPages } = await fetchTipsPagination(page, limit);
-      setTips(fetchedTips);
-      setTotalPages(fetchedTotalPages);
-    } catch (error) {
-      setLoading(false)
-
-      console.error('Erro ao carregar dicas:', error);
-    }finally{
-      setLoading(false)
-
+  const limit = 5;
+    function onDeleteTip(){
+      mutate([currentPage, limit])
     }
-  };
-
-  // Carrega as dicas ao mudar a página
-  useEffect(() => {
-    
-    loadTips(currentPage);
-  }, [currentPage]);
-
-  // Função para mudar de página
-  const handlePageChange = (newPage: number) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setCurrentPage(newPage);
+  // Configuração do SWR
+  const { data, error, isLoading } = useSWR(
+    [currentPage, limit],
+    fetcher,
+    {
+      revalidateOnFocus: true,
+      keepPreviousData: true,
     }
-  };
+  );
+
+  
 
   return (
     <SectionContainer IconTitle={Timer} title='Últimas Dicas' className=''>
       <CardTipsContainer>
       {
         
-        loading?'carregando..':
-        tips.map((tipFull) => (
-          <TipCard currentUser={dataUser?.id|| ''} key={tipFull.id} tipFull={tipFull} />
+        isLoading?'carregando..':
+        data?.tips.map((tipFull) => (
+          <TipCard onDelete={onDeleteTip} currentUser={dataUser?.id|| ''} key={tipFull.id} tipFull={tipFull} />
         ))
       }
       </CardTipsContainer>

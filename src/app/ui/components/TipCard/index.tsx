@@ -15,14 +15,14 @@ interface TipCardProps {
     comments: any[]
 }
 
-export function TipCard({ tipFull, currentUser }: { tipFull: TipsFull, currentUser: string }) {
+export function TipCard({ tipFull, currentUser, onDelete }: { tipFull: TipsFull, currentUser: string, onDelete:()=>void }) {
     return (
         <div className='relative border-b-[0.1px] border-gray-100 py-2 ' >
             <div className="border-b border-gray-100 pb-3 md:pb-4 last:border-b-0 last:pb-0 relative">
                 {
                     tipFull.profile?.id === currentUser &&
                     <div className='absolute right-0 top-0 sm:right-2 sm:top-2 w-8'>
-                        <DropdownCard tipId={tipFull.id} />
+                        <DropdownCard onDelete={onDelete} tipId={tipFull.id} />
                     </div>
                 }
                 <Link href={`/dica/${tipFull.id}`} className="block hover:bg-gray-100 rounded-md cursor-pointer transition duration-200 px-4 py-2 max-w-5xl" >
