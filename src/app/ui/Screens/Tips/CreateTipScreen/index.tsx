@@ -89,7 +89,7 @@ export function CreateTipScreen({ userId }: { userId: string | undefined }) {
           toast({
             description: "Sua dica foi adicionada com sucesso.",
           })
-          route.push('/dicas/dica-criada')
+          route.push(`/dicas/dica-criada/${resp?.data[0]?.id}`)
         }
         if(resp.error){
           console.log(resp.error)

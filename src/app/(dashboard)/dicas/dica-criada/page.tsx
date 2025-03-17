@@ -1,5 +1,5 @@
-import { BuildingScreeen } from "@/app/ui/Screens/BuldingScreen";
+import {CreatedTipsScreen} from "@/app/ui/Screens/Tips/CreatedTipsScreen";
 
 export default async function dicas(){
-    return(<BuildingScreeen/>)
+    return(<CreatedTipsScreen id={''} />)
 }

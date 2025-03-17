@@ -1,8 +1,10 @@
-1 - Implement a library to manage data on aplication - check
-2 - Fix the reload tips when a tip is deleted-  check 
-3 - Create filter to tips by theme and country check
-4 - Fix Distance Button of Home to container
-5 - Style info of user profile check
+1 - Implement a library to manage data on aplication - [CHECKED]
+2 - Fix the reload tips when a tip is deleted-  [CHECKED]
+3 - Create filter to tips by theme and country [CHECKED]
+4 - Fix Distance Button of Home to container[CHECKED]
+5 - Style info of user profile [CHECKED]
 6 - Create questions 
-7 - create empty container to all tips
-8- redirect when create tips
+7 - create empty container to all tips [CHECKED]
+8- redirect when create tips  [CHECKED]
+9 - Create page not found tip
+10 - take out pagination of lat tips home
