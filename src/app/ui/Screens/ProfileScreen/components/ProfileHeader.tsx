@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 
 export function ProfileHeader({ user }:{user:IProfile})  {
   return (
-    <div className="flex flex-col md:flex-row items-center bg-white rounded-lg p-6 mb-6 relative">
+    <div className="flex flex-col md:flex-row items-center bg-white rounded-lg p-4 mb-4 relative">
       <Avatar className="w-32 h-32 md:w-40 md:h-40 mr-0 md:mr-8 mb-4 md:mb-0 static" style={{position:"static"}}>
         <Image 
           width={500} 

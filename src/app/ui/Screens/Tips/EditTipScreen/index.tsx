@@ -226,7 +226,7 @@ export function SelectCountry({ form }: { form: UseFormReturn<{
               </SelectContent>
             </Select>
             <FormDescription>
-              You can manage email addresses in your{" "}
+              {/* You can manage email addresses in your{" "} */}
             
             </FormDescription>
             <FormMessage />
@@ -252,7 +252,6 @@ export function SelectTheme({ form }: { form:  UseFormReturn<{
       .select('*') // Ou especifique as colunas: .select('id, name')
       .order('name', { ascending: true }) // Ordena pelo nome
     // .limit(20); // Retorna apenas 20 resultados
-    console.log('themer=>', data)
     if (error) {
       console.error('Erro ao buscar países:', error);
       return [];
@@ -291,7 +290,7 @@ export function SelectTheme({ form }: { form:  UseFormReturn<{
               </SelectContent>
             </Select>
             <FormDescription>
-              You can manage email addresses in your{" "}
+              {/* You can manage email addresses in your{" "} */}
             </FormDescription>
             <FormMessage />
           </FormItem>

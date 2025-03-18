@@ -23,6 +23,7 @@ import { User } from '@supabase/supabase-js';
 import { insertTip } from './actions/create-tip-action';
 import {  useToast } from '@/components/ui/use-toast';
 import {  useRouter } from 'next/navigation';
+import { SelectCountryForm, SelectThemeForm } from '@/app/ui/components/Forms/Selects';
 // Função para extrair texto do HTML
 function extractTextFromHTML(html: string): string {
   const parser = new DOMParser();
@@ -34,9 +35,7 @@ function extractTextFromHTML(html: string): string {
 const formSchema = z.object({
   title: z.string().min(1, { message: "O título é obrigatório" }),
   theme_id: z.string().min(1, { message: "Você precisa selecionar um tema" }),
-
   country_id: z.string().min(1, { message: "Você precisa selecionar um pais " }),
-
   post: z.string().refine(
     (value) => {
       return extractTextFromHTML(value).trim().length >= 5;
@@ -63,20 +62,13 @@ export function CreateTipScreen({ userId }: { userId: string | undefined }) {
   const form = useForm<FormData>({
     mode: "onTouched",
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: "",
-      post: "",
-      country_id: "",
-      theme_id: ""
-    },
-
+    defaultValues: { title: "",post: "",country_id: "", theme_id: "",},
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-
     const sanitizedContent = sanitizeContent(data.post);
     try {
-    const resp = await insertTip(          {
+    const resp = await insertTip({
       title: data.title,
       content: sanitizedContent,
       created_by: userId,
@@ -111,7 +103,6 @@ export function CreateTipScreen({ userId }: { userId: string | undefined }) {
   }, [])
   return (
     <div className="max-w-3xl mx-auto py-5 container">
-
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
@@ -131,8 +122,8 @@ export function CreateTipScreen({ userId }: { userId: string | undefined }) {
               </FormItem>
             )}
           />
-          <SelectTheme form={form} />
-          <SelectCountry form={form} />
+          <SelectThemeForm form={form} />
+          <SelectCountryForm form={form} />
           <FormField
             control={form.control}
             name="post"
@@ -157,128 +148,7 @@ export function CreateTipScreen({ userId }: { userId: string | undefined }) {
 }
 
 
-type countries = {
-  name: string
-  code: string
-  id: string
-}
 
-export function SelectCountry({ form }: { form: any }) {
-  const [countries, setcountries] = useState([] as countries[])
-  async function getCountries() {
-    const { data, error } = await supabaseClient()
-      .from('countries',)
-      .select('*') // Ou especifique as colunas: .select('id, name')
-      .order('name', { ascending: true }) // Ordena pelo nome
-    // .limit(20); // Retorna apenas 20 resultados
-    console.log(data)
-    if (error) {
-      console.error('Erro ao buscar países:', error);
-      return [];
-    }
-    setcountries(data)
-    return data;
-  }
-  useEffect(() => {
-    getCountries()
-  }, [])
-  return (
-    <>
-      <div className='flex'>
-
-      </div>
-      <FormField
-        control={form.control}
-        name="country_id"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Selecione o pais</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
-              <FormControl >
-                <SelectTrigger>
-                  <SelectValue placeholder="Seleciono e pais relacionado a dica " />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent >
-                {countries.map((country, key) => (
-                  <SelectItem className='flex flex-row ' style={{ display: "flex" }} key={country.id} value={country.id as string}>
-                    <div className='flex align-middle justify-center items-center'>
-                      <WorldFlag style={{ marginRight: '8px', width: '20px', height: '17px', display: 'flex', }} code={country.code} />
-                      <p className=''>{country.name}</p>
-                    </div>
-                  </SelectItem>))}
-
-              </SelectContent>
-            </Select>
-            <FormDescription>
-              You can manage email addresses in your{" "}
-            
-            </FormDescription>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    </>
-  )
-}
-
-
-export function SelectTheme({ form }: { form: any }) {
-  const [themes, setThemes] = useState([] as countries[])
-  async function getThemes() {
-    const { data, error } = await supabaseClient()
-      .from('themes')
-      .select('*') // Ou especifique as colunas: .select('id, name')
-      .order('name', { ascending: true }) // Ordena pelo nome
-    // .limit(20); // Retorna apenas 20 resultados
-    console.log('themer=>', data)
-    if (error) {
-      console.error('Erro ao buscar países:', error);
-      return [];
-    }
-    setThemes(data)
-    return data;
-  }
-  useEffect(() => {
-    getThemes()
-  }, [])
-  return (
-    <>
-      <div className='flex'>
-
-      </div>
-      <FormField
-        control={form.control}
-        name="theme_id"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Selecione o Tema</FormLabel>
-            <Select onValueChange={field.onChange} >
-              <FormControl >
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecione o Tema da sua dica " />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent >
-                {themes.map((theme, key) => (
-                  <SelectItem className='flex flex-row ' style={{ display: "flex" }} key={theme.id} value={theme.id.trim() as string}>
-                    <div className='flex align-middle justify-center items-center'>
-                      <p className=''>{theme.name}</p>
-                    </div>
-                  </SelectItem>))}
-
-              </SelectContent>
-            </Select>
-            <FormDescription>
-              You can manage email addresses in your{" "}
-            </FormDescription>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    </>
-  )
-}
 
 
 

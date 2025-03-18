@@ -8,7 +8,7 @@ export const getQuestions = async () => {
     .from("questions")
     .select(`
       *,
-      created_by:users!questions_created_by_fkey (
+      created_by:profiles!questions_created_by_fkey (
         id,
         name,
         avatar_url
@@ -25,7 +25,7 @@ export const getQuestions = async () => {
         id,
         content,
         created_at,
-        users (
+        profiles (
           id,
           name,
           avatar_url

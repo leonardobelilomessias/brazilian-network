@@ -21,7 +21,7 @@ export async function TipsScreen() {
   return (
     <div className=" container mx-auto max-w-5xl py-8 px-2">
       <div className='flex justify-between'>
-        <div>
+        <div className='mb-4'>
             <h1 className='text-2xl font-bold'>Dicas</h1>
             <p className='text-sm text-gray-500 '>Encontre e  crie dicas sobre paises que você imigrou ou pretende imigrar.</p>
         </div>

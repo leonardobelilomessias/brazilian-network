@@ -6,12 +6,12 @@ import { Filter, Search, SlidersHorizontal } from "lucide-react";
 import { usePathname, useSearchParams, useRouter} from "next/navigation";
 import { useEffect, useState } from "react";
 import WorldFlag from 'react-world-flags';
-import { useSelectStoreContry, useSelectStoreTheme } from "./stores/selectStore";
+import { useSelectStoreContryTips, useSelectStoreThemeTips } from "./stores/selectStore";
 
 
-export function SelectGroup() {
-  const { selectedValueTheme, setSelectedValueTheme } = useSelectStoreTheme();
-  const {selectedValueCountry, setSelectedValueCountry} = useSelectStoreContry()
+export function SelectGroupTips() {
+  const { selectedValueThemeTips, setSelectedValueThemeTips } = useSelectStoreThemeTips();
+  const {selectedValueCountryTips, setSelectedValueCountryTips} = useSelectStoreContryTips()
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -31,23 +31,23 @@ export function SelectGroup() {
     console.log(`${pathname}?${params.toString()}`)
   }
   function cleanFilters(){
-    setSelectedValueCountry('')
-    setSelectedValueTheme('')
+    setSelectedValueCountryTips('')
+    setSelectedValueThemeTips('')
     handleSearch({country:"",theme:""})
   }
   useEffect(()=>{
     // handleSearch({theme:selectedValueTheme,country:selectedValueCountry})
-    return ()=> {setSelectedValueTheme('') 
-      setSelectedValueCountry('')}
+    return ()=> {setSelectedValueThemeTips('') 
+      setSelectedValueCountryTips('')}
   },[])
     return (
-        <div>
+        <div className=" px-4 py-2">
             <div className="flex items-center"><SlidersHorizontal size={14} /> <p className="text-sm">Filtros</p></div>
             <div className="flex gap-4 align-bottom items-end  mt-1">
                 <SelectTheme title="Tema"/>
                 <SelectCountry title="Pais" />
                 <Button onClick={()=>cleanFilters()}  size={'sm'} className="  text-sm border-blue-500 bg-white border flex gap-2 hover:bg-blue-300 hover:text-blue-50 hover:border-white text-blue-500 "> <p>Limpar</p> </Button>
-                <Button onClick={()=>handleSearch({theme:selectedValueTheme,country:selectedValueCountry})}  size={'sm'} className="  text-sm border-blue-500 bg-white border flex gap-2 hover:bg-blue-300 hover:text-blue-50 hover:border-white text-blue-500 "> <Search size={16} /><p>Filtrar</p> </Button>
+                <Button onClick={()=>handleSearch({theme:selectedValueThemeTips,country:selectedValueCountryTips})}  size={'sm'} className="  text-sm border-blue-500 bg-white border flex gap-2 hover:bg-blue-300 hover:text-blue-50 hover:border-white text-blue-500 "> <Search size={16} /><p>Filtrar</p> </Button>
             </div>
         </div>
     );
@@ -63,7 +63,7 @@ type countries = {
 
 
 export function SelectCountry({title}:{title:string}) {
-  const { selectedValueCountry, setSelectedValueCountry } = useSelectStoreContry();
+  const { selectedValueCountryTips, setSelectedValueCountryTips } = useSelectStoreContryTips();
     const [countries, setcountries] = useState([] as countries[])
     async function getCountries() {
       const { data, error } = await supabaseClient()
@@ -83,10 +83,10 @@ export function SelectCountry({title}:{title:string}) {
       getCountries()
     }, [])
     const handleChange = (e:string) => {
-      setSelectedValueCountry(e); // Atualiza o estado global
+      setSelectedValueCountryTips(e); // Atualiza o estado global
     }
     return (
-      <Select  value={selectedValueCountry}  onValueChange={(e)=>handleChange(e)}>
+      <Select  value={selectedValueCountryTips}  onValueChange={(e)=>handleChange(e)}>
       
         <SelectTrigger className="w-[180px]"  >
           <SelectValue placeholder={`Filtrar por ${title}`} />
@@ -106,7 +106,7 @@ export function SelectCountry({title}:{title:string}) {
 
   
   export function SelectTheme({title}:{title:string}) {
-    const { selectedValueTheme, setSelectedValueTheme} = useSelectStoreTheme();
+    const { selectedValueThemeTips, setSelectedValueThemeTips} = useSelectStoreThemeTips();
       const [themes, setThemes] = useState([] as countries[])
       async function getThemes() {
         const { data, error } = await supabaseClient()
@@ -114,7 +114,6 @@ export function SelectCountry({title}:{title:string}) {
           .select('*') // Ou especifique as colunas: .select('id, name')
           .order('name', { ascending: true }) // Ordena pelo nome
         // .limit(20); // Retorna apenas 20 resultados
-        console.log('themer=>', data)
         if (error) {
           console.error('Erro ao buscar países:', error);
           return [];
@@ -126,10 +125,10 @@ export function SelectCountry({title}:{title:string}) {
         getThemes()
       }, [])
       const handleChange = (e:string) => {
-        setSelectedValueTheme(e); // Atualiza o estado global
+        setSelectedValueThemeTips(e); // Atualiza o estado global
       }
     return (
-      <Select value={selectedValueTheme} onValueChange={(e)=> handleChange(e)}>
+      <Select value={selectedValueThemeTips} onValueChange={(e)=> handleChange(e)}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder={`Filtrar por ${title}`} />
         </SelectTrigger>

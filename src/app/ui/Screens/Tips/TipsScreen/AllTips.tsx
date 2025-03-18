@@ -8,39 +8,39 @@ import SectionContainer from '@/app/ui/components/Containers/SectionContainer';
 import CardTipsContainer from '@/app/ui/components/Containers/CardsTipsContainer';
 import { TipCard } from '@/app/ui/components/TipCard';
 import { GenericPagination } from '@/app/ui/components/Pagination/GenericPagination';
-import { SelectGroup } from './SelectTips';
+import { SelectGroupTips } from './SelectTips';
 import { supabaseClient } from '@/lib/supabase/client';
 import { User } from '@supabase/supabase-js';
 import useSWR, { mutate } from 'swr';
-import { useSelectStoreContry, useSelectStoreTheme } from './stores/selectStore';
+import { useSelectStoreContryTips, useSelectStoreThemeTips } from './stores/selectStore';
 import { EmptyTips } from '@/app/ui/components/Tips/EmptyTyps';
 
-const fetcher = async ([page, limit, selectedValueTheme, selectedValueCountry]: [number, number, string, string]) => {
-  console.log('buscando ....')
-  const result = await fetchTipsPaginationWithSelect(page, limit, selectedValueTheme, selectedValueCountry,);
+const fetcherTips = async ([page, limit, selectedValueThemeTips, selectedValueCountryTips]: [number, number, string, string]) => {
+  console.log('buscando dicas ....')
+  const result = await fetchTipsPaginationWithSelect(page, limit, selectedValueThemeTips, selectedValueCountryTips,);
   console.log(result)
   return result;
 };
 
 export function AllTips() {
-  const { selectedValueTheme, setSelectedValueTheme } = useSelectStoreTheme();
-  const { selectedValueCountry } = useSelectStoreContry();
+  const { selectedValueThemeTips, setSelectedValueThemeTips } = useSelectStoreThemeTips();
+  const { selectedValueCountryTips } = useSelectStoreContryTips();
 
 
   const [user, setUser] = useState<User | null>()
   const { dataUser } = useUserData();
-  const [currentPage, setCurrentPage] = useState(1);
-  const limit = 5;
+  const [currentPageTips, setCurrentPage] = useState(1);
+  const limitTips = 5;
   function onDeleteTip() {
-    mutate([currentPage, limit, selectedValueTheme, selectedValueCountry])
+    mutate([currentPageTips, limitTips, selectedValueThemeTips, selectedValueCountryTips])
   }
   // Configuração do SWR
   const { data, error, isLoading } = useSWR(
-    [currentPage, limit, selectedValueTheme, selectedValueCountry],
-    fetcher,
+    [currentPageTips, limitTips, selectedValueThemeTips, selectedValueCountryTips],
+    fetcherTips,
     {
       revalidateOnFocus: true,
-      keepPreviousData: true,
+      // keepPreviousData: true,
     }
   );
   async function getDatauser() {
@@ -55,13 +55,13 @@ export function AllTips() {
   // Carrega as dicas ao mudar a página
   useEffect(() => {
     getDatauser()
-  }, [currentPage]);
+  }, [currentPageTips]);
 
 
 
   return (
     <SectionContainer IconTitle={Timer} title='Últimas Dicas' className=''>
-      <SelectGroup />
+      <SelectGroupTips />
 
       <CardTipsContainer>
         {
@@ -70,16 +70,16 @@ export function AllTips() {
             <div className="flex items-center justify-center min-h-[400px]">
               <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
             </div> :
-            data?.tips.map((tipFull) => (
+            data?.tips?.map((tipFull) => (
               <TipCard onDelete={onDeleteTip} currentUser={user?.id || ''} key={tipFull.id} tipFull={tipFull} />
             ))
         }
         {
-          (!data?.tips.length && !isLoading) && <EmptyTips />
+          (!data?.tips?.length && !isLoading) && <EmptyTips />
         }
       </CardTipsContainer>
       <GenericPagination
-        currentPage={currentPage}
+        currentPage={currentPageTips}
         totalPages={data?.totalPages as number}
         onPageChange={(page) => setCurrentPage(page)}
       />

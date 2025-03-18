@@ -8,30 +8,74 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { SelectCountryForm, SelectThemeForm } from "@/app/ui/components/Forms/Selects";
+import { useState } from "react";
+import { supabaseClient } from "@/lib/supabase/client";
+import { User } from "@supabase/supabase-js";
+import { insertQuestion } from "@/lib/supabase/queries/server/questions";
 
 const questionSchema = z.object({
   title: z.string().min(5, "O título deve ter pelo menos 5 caracteres"),
   content: z.string().min(20, "A descrição deve ter pelo menos 20 caracteres"),
-  theme_id: z.string(),
-  country_id: z.string(),
+  theme_id: z.string().min(1, { message: "Você precisa selecionar um tema" }),
+  country_id: z.string().min(1, { message: "Você precisa selecionar um pais " }),
+  created_by: z.string(),
 });
 
-export function CreateQuestionScreen() {
+export function CreateQuestionScreen({ userId }: { userId: string | undefined }) {
+
   const { toast } = useToast();
   const router = useRouter();
+  const [user, setUser] = useState<User | null>()
+  async function getuser() {
+    const { data } = await supabaseClient().auth.getUser()
+    console.log('getuser', data)
+    setUser(data.user)
+
+  }
 
   const form = useForm<z.infer<typeof questionSchema>>({
+    mode: "onTouched",
     resolver: zodResolver(questionSchema),
+    defaultValues: {
+      title: "",
+      content: "",
+      country_id: userId,
+      theme_id: "",
+      created_by: "",
+    },
   });
 
-  async function onSubmit(values: z.infer<typeof questionSchema>) {
+  async function onSubmit(data: z.infer<typeof questionSchema>) {
+    console.log(data)
     try {
       // Implementar a lógica de criação da pergunta
-      toast({
-        title: "Sucesso!",
-        description: "Sua pergunta foi publicada.",
-      });
-      router.push("/perguntas");
+
+      const resp = await insertQuestion({
+        title: data.title,
+        content: data.content,
+        created_by: userId,
+        theme_id: data.theme_id,
+        country_id: data.country_id,
+      })
+      if (resp.statusText === "Created") {
+        console.log('data send tip', resp);
+        toast({
+          description: "Sua PErgunta foi adicionada com sucesso.",
+        })
+        router.push(`/perguntas/pergunta-criada/${resp?.data[0]?.id}`)
+      }
+      if (resp.error) {
+        console.log(resp.error)
+        toast({
+          title: "Erro!",
+          description: `Não foi possível publicar sua pergunta.${resp.error.message}`,
+          variant: "destructive",
+        });
+      }
+      // revalidatePath('/dicas');
+
+      // router.push("/perguntas");
     } catch (error) {
       toast({
         title: "Erro!",
@@ -44,9 +88,8 @@ export function CreateQuestionScreen() {
   return (
     <div className="container max-w-2xl mx-auto py-8">
       <h1 className="text-2xl font-bold mb-6">Fazer uma Nova Pergunta</h1>
-      
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-1">
           <FormField
             control={form.control}
             name="title"
@@ -60,7 +103,8 @@ export function CreateQuestionScreen() {
               </FormItem>
             )}
           />
-
+          <SelectThemeForm form={form} />
+          <SelectCountryForm form={form} />
           <FormField
             control={form.control}
             name="content"
@@ -68,8 +112,8 @@ export function CreateQuestionScreen() {
               <FormItem>
                 <FormLabel>Descrição</FormLabel>
                 <FormControl>
-                  <Textarea 
-                    placeholder="Descreva sua pergunta em detalhes..." 
+                  <Textarea
+                    placeholder="Descreva sua pergunta em detalhes..."
                     className="min-h-[200px]"
                     {...field}
                   />

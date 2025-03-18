@@ -1,21 +1,21 @@
 import { create } from 'zustand';
 
 
-type SelectStateCountry = {
-  selectedValueCountry: string;
-  setSelectedValueCountry: (value: string) => void;
+type SelectStateCountryTips = {
+  selectedValueCountryTips: string;
+  setSelectedValueCountryTips: (value: string) => void;
 };
-type SelectStateTheme = {
-    selectedValueTheme: string;
-    setSelectedValueTheme: (value: string) => void;
+type SelectStateThemeTips = {
+    selectedValueThemeTips: string;
+    setSelectedValueThemeTips: (value: string) => void;
   };
 
-export const useSelectStoreTheme = create<SelectStateTheme>((set) => ({
-    selectedValueTheme: '', // Valor inicial
-    setSelectedValueTheme: (value) => set({ selectedValueTheme: value }), // Função para atualizar o valor
+export const useSelectStoreThemeTips = create<SelectStateThemeTips>((set) => ({
+    selectedValueThemeTips: '', // Valor inicial
+    setSelectedValueThemeTips: (value) => set({ selectedValueThemeTips: value }), // Função para atualizar o valor
 }));
 
-export const useSelectStoreContry = create<SelectStateCountry>((set) => ({
-    selectedValueCountry: '', // Valor inicial
-    setSelectedValueCountry: (value) => set({ selectedValueCountry: value }), // Função para atualizar o valor
+export const useSelectStoreContryTips = create<SelectStateCountryTips>((set) => ({
+    selectedValueCountryTips: '', // Valor inicial
+    setSelectedValueCountryTips: (value) => set({ selectedValueCountryTips: value }), // Função para atualizar o valor
   }))

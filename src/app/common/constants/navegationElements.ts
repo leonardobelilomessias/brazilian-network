@@ -6,7 +6,7 @@ export const navigationElements = [{
     { title: 'Home', link: '/dashboard', icon: House , status:"Novo" },
     { title: 'Perfil', link: "/perfil", icon: User2, status:"Novo" },   
     { title: 'Dicas', link: "/dicas", icon: Lightbulb, status:"Novo" },
-    { title: 'Dúvidas', link: "/duvidas", icon: CircleHelp, status:"Novo" },
+    { title: 'Perguntas', link: "/perguntas", icon: CircleHelp, status:"Novo" },
     { title: 'Contribua', link: "/contribua", icon: BadgeDollarSign, status:"Novo" },
     { title: 'Informaçoes', link: "/informaçoes", icon: Info, status:"Novo" },
 

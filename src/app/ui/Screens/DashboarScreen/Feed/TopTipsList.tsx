@@ -5,11 +5,11 @@ import { Timer } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import useSWR, {mutate} from 'swr';
-import SectionContainer from '../../components/Containers/SectionContainer';
-import CardTipsContainer from '../../components/Containers/CardsTipsContainer';
-import { TipCard } from '../../components/TipCard';
+import SectionContainer from '../../../components/Containers/SectionContainer';
+import CardTipsContainer from '../../../components/Containers/CardsTipsContainer';
+import { TipCard } from '../../../components/TipCard';
 import { useUserData } from '@/context/ContextUserAccont';
-import { GenericPagination } from '../../components/Pagination/GenericPagination';
+import { GenericPagination } from '../../../components/Pagination/GenericPagination';
 
 // Configuração do fetcher
 const fetcher = async ([page, limit]: [number, number]) => {

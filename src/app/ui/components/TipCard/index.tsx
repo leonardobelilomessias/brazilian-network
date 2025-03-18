@@ -17,7 +17,7 @@ interface TipCardProps {
 
 export function TipCard({ tipFull, currentUser, onDelete }: { tipFull: TipsFull, currentUser: string, onDelete:()=>void }) {
     return (
-        <div className='relative border-b-[0.1px] border-gray-100 py-2 ' >
+        <div className='relative border-b-[0.1px] border-gray-100 pb-2 ' >
             <div className="border-b border-gray-100 pb-3 md:pb-4 last:border-b-0 last:pb-0 relative">
                 {
                     tipFull.profile?.id === currentUser &&

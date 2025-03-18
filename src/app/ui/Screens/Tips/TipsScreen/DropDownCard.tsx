@@ -52,7 +52,7 @@ const {toast} = useToast()
         </DropdownMenuItem>
           </Link>
         <DropdownMenuItem 
-          className='flex items-center gap-2'
+          className='flex items-center gap-2 p-1'
           onSelect={handleDelete}
           disabled={isPending}
         >

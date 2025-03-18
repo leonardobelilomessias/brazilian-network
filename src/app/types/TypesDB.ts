@@ -290,3 +290,42 @@ export interface Tip {
       };
     }>;
   }
+
+  export interface ListItemGenericFull {
+    id: string;
+    title: string;
+    content: string;
+    created_by: string;
+    theme_id: string | null;
+    country_id: string | null;
+    likes_count: number;
+    created_at: string;
+    updated_at: string;
+    profile: {
+      id: string;
+      user_name: string;
+      full_name: string;
+      avatar_url: string;
+    };
+    theme: {
+      id: string;
+      name: string;
+    };
+    country: {
+      id: string;
+      name: string;
+      code: string;
+    };
+    comments: Array<{
+      id: string;
+      content: string;
+      created_at: string;
+      user_id: string;
+      profile: {
+        id: string;
+        user_name: string;
+        avatar_url: string;
+        full_name: string;
+      };
+    }>;
+  }

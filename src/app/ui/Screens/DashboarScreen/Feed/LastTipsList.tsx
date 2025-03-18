@@ -4,9 +4,9 @@ import { fetchTipsPagination } from '@/lib/supabase/queries/server/fetchTipsPagi
 import { Timer } from 'lucide-react';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import SectionContainer from '../../components/Containers/SectionContainer';
-import CardTipsContainer from '../../components/Containers/CardsTipsContainer';
-import { TipCard } from '../../components/TipCard';
+import SectionContainer from '../../../components/Containers/SectionContainer';
+import CardTipsContainer from '../../../components/Containers/CardsTipsContainer';
+import { TipCard } from '../../../components/TipCard';
 import { useUserData } from '@/context/ContextUserAccont';
 import useSWR,{mutate} from 'swr';
 const fetcher = async ([page, limit]: [number, number]) => {
@@ -26,7 +26,7 @@ export function LastTipsList() {
     fetcher,
     {
       revalidateOnFocus: true,
-      keepPreviousData: true,
+      // keepPreviousData: true,
     }
   );
 
@@ -47,7 +47,7 @@ export function LastTipsList() {
       {/* Paginação */}
       <div className="">
         <Link href="/dicas">
-          <button className="bg-blue-500 text-white px-3 py-1 md:px-4 md:py-2 rounded-md text-xs md:text-sm hover:bg-blue-600 transition duration-200">
+          <button className="bg-blue-500 text-white px-3 py-1 md:px-4 md:py-2 rounded-md text-sm md:text-sm hover:bg-blue-600 transition duration-200 mt-4">
             Ver todas
           </button>
         </Link>

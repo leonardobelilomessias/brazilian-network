@@ -21,7 +21,7 @@ function AccountCountext({children}:{children:ReactNode}){
 
         setDataUser(data as IProfile)
     }
-    console.log("data  usuario", user) 
+    
     
 }    
     useEffect(()=>{
